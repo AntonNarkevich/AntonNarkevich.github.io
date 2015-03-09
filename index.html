@@ -1,142 +1,709 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
 
-		<title>Node Rush</title>
+    <title>reveal.js - The HTML Presentation Framework</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
-
-	<body>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
 
     <style>
-        h1, h2 {
-            color: #80bd01 !important;
+        *[no-border] {
+            border: none !important;
+        }
+        
+        *[no-uppercase] {
+            text-transform: none !important;
         }
     </style>
+</head>
 
-		<div class="reveal">
+<body>
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-                <section>
-                    <h1>Node Rush</h1>
+<div class="reveal">
 
-                    <p>Node.js Learning Course</p>
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>Node.js Basics</h1>
+        </section>
 
-                    <img src="nodejs.png" alt=""/>
-                </section>
+        <section>
+            <h2>Contents</h2>
 
-                <section>
-                    <h2>Зачем?</h2>
+            <ul>
+                <li>Node architecture.</li>
+                <li>Asynchrony</li>
+                <li>Callbacks</li>
+            </ul>
+        </section>
 
-                    <ul>
-                        <li>Технология актуальна</li>
-                        <li>Node очень удобен</li>
-                        <li>Его никто не знает</li>
-                        <li>Захват проектов с нуля</li>
-                        <li>Cертификация</li>
-                    </ul>
+        <section>
+            <h2>Server-side JS platform that is:</h2>
+            <ul>
+                <li>open source</li>
+                <li>cross-platform</li>
+                <li>non-blocking (async)</li>
+                <li>modular</li>
+                <li>scalable</li>
+            </ul>
+        </section>
 
-                    <img src="why.jpg" height="200" alt=""/>
-                </section>
+        <section>
+            <img src="arch.jpg" alt=""/>
 
-                <section>
-                     <h2>Почему Node.js?</h2>
+            <aside class="notes">
+                Libuv is a multi-platform support library with a focus on asynchronous I/O. It was primarily developed
+                for use by Node.js.
+                (Handles child process, socket, file system operations etc.)
 
-                    <ul>
-                        <li>Кода нужно мало. DRY</li>
-                        <li>OpenSource. Есть модули для всего.</li>
-                        <li>Full Stack JS</li>
-                        <li>Скорость/Масштабируемость</li>
-                        <li>Асинхронность</li>
-                    </ul>
+                V8 compiles JavaScript source code just-in-time to machine code instead of interpreting it in real time.
+                Also provides JS access to C++ objects and C++ access to JS objects.
 
-                    <img src="benefit.jpg" height="200" alt=""/>
-                </section>
+                Binding modules modules that add possibility to use C++ libs in Node.js
+                So some modules are done in C/C++.
+            </aside>
+        </section>
 
-                <section>
-                    <h2>Что Вас ждет?</h2>
+        <section>
+            <section>
+                <h2>Asynchronious. What does it mean?</h2>
+            </section>
 
-                    <ul>
-                        <li>5 тематических модулей</li>
-                        <li>Проект, серия ревью</li>
-                        <li>Тесты</li>
-                        <li>Челленджи</li>
-                    </ul>
+            <section>
+                <h2>Synchronious code:</h2>
 
-                    <img src="tech.jpg" alt=""/>
-                </section>
+                <ol>
+                    <li>Sends request to DB.</li>
+                    <li>Waits for response i.e. thread.sleep()</li>
+                    <li>Executes the code after DB call. (processes data)</li>
+                </ol>
 
-                <section>
-                    <h2>В итоге</h2>
+                <pre><code>
+var db = new DB();
+var data = db.getData(); //We sleep here say for 2 s.
+console.log(data);
+                </code></pre>
+            </section>
 
-                    <ul>
-                        <li>Вы Node.js разработчик</li>
-                        <li>Вы сертифицированный Node.js разработчик</li>
-                        <li>Проекты с нуля, на MEAN stack etc</li>
-                    </ul>
+            <section>
+                <h2>Asynchronious code:</h2>
+                <ol>
+                    <li>Sends request to DB.</li>
+                    <li>Go on with other code.</li>
+                    <li>Response from DB come in any time on a callback.</li>
+                </ol>
 
-                    <img src="hipster.jpg" alt=""/>
-                </section>
-			</div>
+                <pre><code>
+var db = new DB();
+db.getData(function(err, data) {
+    console.log(data);
+});
+otherWork.do();//Immediately do this work.
+               //No need to wait for DB to respond.
+                </code></pre>
+            </section>
+        </section>
 
-		</div>
+        <section>
+            <img src="eventLoop1.png" style="" alt=""/>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+            <aside>
+                Выполняет код, который ми пишем только один поток.
+                В отличие от Asp.Net MVC, где под каждый запрос создается поток.
 
-		<script>
+                Этот потом выполняет какую-то работу. Затем приходит к месту, где начинается
+                операция с OS. Останавливаестся и переходит к выолнению какой-то другой работы
+                из очереди выполнения. (Как в клиентском JavaScript)
 
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+                Как только операция с OS завершена, фаерится событие и в очередь выполнения
+                поступает новая функция-колбек, в которую передается результат выполнения операции.
+            </aside>
+        </section>
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+        <section>
+            <img src="eventLoop2.png" alt=""/>
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
+            <aside>
+                Т.е. Node.js + OS сами разбираются как эффективным образом испльзовать потоки,
+                чтобы выполнить эти тяжелые задачи максимально эффективно.
 
-		</script>
+                Основной же процесс завершения их не ждет а за это время обрабатывает как можно
+                большее число запросов.
+            </aside>
+        </section>
 
-	</body>
+        <section>
+            <h2>Gist</h2>
+
+            <p>We don't wait while file is being read.</p>
+            <p>We process requests.</p>
+
+            <p>We don't waste resources on creating processes.</p>
+
+            <aside>
+                В этом и состоит основная фишка асинхронности.
+                Это сейчас очень модно. Tornado, async/await в C# и т д.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Performance growth</h2>
+            <img src="asyncGraph.png" alt=""/>
+
+            <aside>
+                По версии блога:
+                http://blog.stevensanderson.com/2010/01/25/measuring-the-performance-of-asynchronous-controllers/
+            </aside>
+        </section>
+
+        <section>
+            <h2>Specific</h2>
+
+            <p>Do not use Node.js for heavy computing.</p>
+        </section>
+
+        <section>
+            <h2>What is looks like?</h2>
+            <pre><code>
+var fs = require('fs');
+
+fs.readFile('myFile.txt', function(err, data) {
+    if (err) {
+        console.error(err);
+        throw err;
+    }
+
+    console.log("Async operation's been completed");
+    console.log(data);
+}
+
+console.log("Do some other work. Process other request etc.");
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Another example</h2>
+
+            <pre><code>
+var request = require('request');
+
+for (var i = 0; i < 100; i += 1) {
+    request.get("google.com", function(err, data) {
+        console.log("Async operaion has been completed");
+        console.log("We should process results");
+    });
+
+    console.log("Async operation in progress. We continue working");
+}
+            </code></pre>
+        </section>
+
+        <section>
+            <section>
+                <h2>Callbacks (Errbacks)</h2>
+
+                <h3>Takes 2 arguments</h3>
+                <ul>
+                    <li>First argument is error</li>
+                    <li>Second argument is the result</li>
+                    <li>Never pass both</li>
+                    <li>Error should be insanceof Error (troothy)</li>
+                </ul>
+            </section>
+
+            <section>
+                <pre><code>
+request('http://www.google.com', function (err, response) {
+    if (err) {
+        return console.error(err);
+    }
+
+    console.log('No errors, status is: ' + response.status);
+});
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Callbacks (Errbacks)</h2>
+
+                <ul>
+                    <li>Must be executed on the same tick of the event loop</li>
+                    <li>Must be passed as a last argument</li>
+                    <li>Returned value is ignored</li>
+                    <li>Must not throw any errors/ pass resulting errors</li>
+                    <li>Must never be called more than once</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="callbackPrincipals.png" alt=""/>
+            </section>
+
+            <aside class="notes">
+                https://www.youtube.com/watch?v=UsBng6yfiEQ
+                http://williamdurand.fr/2013/06/03/object-calisthenics/
+
+                Он должен быть выполнен на следующем тике. Обязательно.
+                Этого можно достичь с помощью process.NextTick
+                либо setInterval (??в чем разница).
+
+                Так как, если это, например стрим. То работает он по такому
+                принципу. Создали стрим, подписались на события, отреагировали на
+                события, обработали результат.
+
+                Если колбек не будет выполнен на следующем тике, то результат
+                вернется до того, как будут повешены обработчики событий.
+
+                Этому правилу желательно следовать всегда.
+            </aside>
+
+            <aside class="notes">
+                No throwing because we can't catch it.
+            </aside>
+        </section>
+
+
+        <section>
+            <h2>Part 2. How to Node.</h2>
+        </section>
+
+        <section>
+            <img no-border src="nodejsorg.png" alt=""/>
+        </section>
+
+        <section>
+            <h2>REPL</h2>
+            <img no-border src="repl.png" alt=""/>
+            <p>Stands for Read-Eval-Print-Loop</p>
+        </section>
+
+        <section>
+            <section>
+                <h2>NPM</h2>
+
+                <img no-border src="npm.png" alt=""/>
+
+                <p>Stands for Node Package Manager</p>
+            </section>
+
+            <section>
+                <h2>package.json</h2>
+
+                <img src="packageJson2.png" alt=""/>
+
+                <p>Use "npm init" to create it</p>
+            </section>
+
+            <section>
+                <h2>Select a module and install it</h2>
+
+                <img src="npmjsorg.png" alt=""/>
+
+                <p>"npm install [name]" or "npm install [name] --save"</p>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>It will appear in node_modules folder</p>
+                <img src="nodemodules.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>And will have it's own dependencies.</p>
+                <img src="nodemodules2.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+
+                <p>If you install module with --global flag.</p>
+                <p>You can get access to it's executable in cmd.</p>
+
+                <img src="nodemodules3.png" alt=""/>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>require installed module</h2>
+
+                <pre><code>
+npm install colors
+                </code></pre>
+
+                <pre><code>
+'use strict';
+var colors = require('colors');
+
+console.log('We have required module'.green);
+console.log('Now we use it'.rainbow);
+                </code></pre>
+
+                <img src="colors.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>require standard module</h2>
+
+                <pre><code>
+var util = require('util');
+
+var message = util.format('Format is very %s, I have used it %d times.',
+                    'useful', 1000);
+console.log(message);
+
+var message2 = util.format('It can convert %j to JSON.', {any: "object"});
+console.log(message2);
+                </code></pre>
+
+                <img src="util.png" alt=""/>
+            </section>
+
+            <section>
+                Of cause you can create modules.
+
+                <pre><code>
+//greeter.js
+var util = require('util');
+
+var greet = function (username) {
+    return util.format("Hello, %s", username);
+};
+
+module.exports = {
+    greet: greet
+};
+
+//app.js
+var greeter = require('./greeter.js');
+
+console.log(greeter.greet('Anton'));
+                </code></pre>
+
+                <img src="greeter.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>So generally you can</h2>
+
+                <ul>
+                    <li>Require .js files (your modules)</li>
+                    <li>Require .json files (you'll get object)</li>
+                    <li>Require folders (if they contain index.js)</li>
+                    <li>Require standard modules e.g. util, fs</li>
+                    <li>Require from node_modules</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>It's trickier than you think.</h2>
+
+                <img src="require.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>And even trickier</h2>
+
+                <p>Check out <a href="https://nodejs.org/api/modules.html#modules_all_together">the Docks</a>.</p>
+            </section>
+
+            <aside class="notes">
+                Indeed this is a simplification. So check out the docks about require.
+                To get the general understanding.
+
+                https://nodejs.org/api/modules.html#modules_all_together
+
+                require(X) from module at path Y
+                1. If X is a core module,
+                a. return the core module
+                b. STOP
+                2. If X begins with './' or '/' or '../'
+                a. LOAD_AS_FILE(Y + X)
+                b. LOAD_AS_DIRECTORY(Y + X)
+                3. LOAD_NODE_MODULES(X, dirname(Y))
+                4. THROW "not found"
+
+                LOAD_AS_FILE(X)
+                1. If X is a file, load X as JavaScript text.  STOP
+                2. If X.js is a file, load X.js as JavaScript text.  STOP
+                3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+                4. If X.node is a file, load X.node as binary addon.  STOP
+
+                LOAD_AS_DIRECTORY(X)
+                1. If X/package.json is a file,
+                a. Parse X/package.json, and look for "main" field.
+                b. let M = X + (json main field)
+                c. LOAD_AS_FILE(M)
+                2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+                3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+                4. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+                LOAD_NODE_MODULES(X, START)
+                1. let DIRS=NODE_MODULES_PATHS(START)
+                2. for each DIR in DIRS:
+                a. LOAD_AS_FILE(DIR/X)
+                b. LOAD_AS_DIRECTORY(DIR/X)
+
+                NODE_MODULES_PATHS(START)
+                1. let PARTS = path split(START)
+                2. let I = count of PARTS - 1
+                3. let DIRS = []
+                4. while I >= 0,
+                a. if PARTS[I] = "node_modules" CONTINUE
+                c. DIR = path join(PARTS[0 .. I] + "node_modules")
+                b. DIRS = DIRS + DIR
+                c. let I = I - 1
+                5. return DIRS
+            </aside>
+        </section>
+
+        <section>
+            <h2>Part 3. Globals.</h2>
+        </section>
+        
+        <section>
+            <h2>There are a fhew global objects in Node.js.</h2>
+
+            <ul>
+                <li>global</li>
+                <li>module</li>
+                <li>module.exports & exports</li>
+                <li>process</li>
+            </ul>
+        </section>
+        
+        <section>
+            <section>
+                <h2 no-uppercase>global</h2>
+
+                <p>True global object. If you set:</p>
+                <pre><code>
+global.testDirectoryPath = path.join(__dirname, "test");
+                </code></pre>
+
+                <p>It will be available anywhere. (From any other modules.)</p>
+            </section>
+
+            <section>
+                <h2>Difference between <span no-uppercase>'window'</span> and <span no-uppercase>'global'</span>.</h2>
+
+                <pre><code>
+var x = 3; //Doesn't go to global;
+y = 4; //Goes to global;
+global.z = 5; //Goes to global, evident;
+                </code></pre>
+
+                <p>Node's modules are wrapped in a closure, which is evaluated in the
+                    this-context of the exports object.</p>
+            </section>
+        </section>
+
+        <section>
+            <h2>What is <span no-uppercase>'this'</span>?</h2>
+
+            <p>
+                Node's modules are wrapped in a closure, which is evaluated in the
+                this-context of the exports object.
+            </p>
+
+            <p>So 'this' is exports.</p>
+
+            <pre><code>
+var assert = require('assert');
+assert.equal(this, module.exports);
+            </code></pre>
+
+            <aside class="notes">
+                So var x = 3; Won't create a property on global object.
+
+                Node's modules are wrapped in a closure, which is evaluated in the
+                this-context of the exports object.  So, if you do "var a = 3", then
+                it won't be added to this, global, or exports.  But, if you do "this.a
+                = 3" then it'll be added to "this" and "exports".
+
+                //so
+                var x = 3;
+                //goes to that context as a local variable
+
+                this.y = 3;
+                //goes to exports
+
+                z = 3;
+                //goest to global object
+            </aside>
+
+        </section>
+
+
+        <section>
+            <section>
+                <h2>exports & module.exports</h2>
+
+                <pre><code>
+//Think about exports as about a link:
+var exports = module.exports;
+                </code></pre>
+
+                <img src="exports.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Because of this:</h2>
+
+                <pre><code>
+exports.myFunction1 = function () {}; //OK
+exports = function () {}; //Doesn't change exported object.
+                          //Changes only link (similar to pointer)
+                          //Be careful.
+
+module.exports = function () {}; //OK
+module.exports = { myFunction: function () {} } //OK
+                </code></pre>
+
+                <p>So use module.exports</p>
+            </section>
+
+            <aside class="notes">
+                So if you do exports = { f: function() {} } it won't have an effect;
+                Because still module.exports will be returned.
+
+                You should use exports.f = function() {};
+
+                And at the same time module.exports = { f: function() {} } will have an effect.
+
+
+                Also you can:
+                module.exports = function(){};
+                ...
+                var m = require(module)();
+
+                And you cannot:
+                exports = function() {};
+                ...
+                var m = require(module)(); //Exception.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Module</h2>
+            <p>Information about current module.</p>
+            <p>Local for every module.</p>
+
+            <ul>
+                <li>module.parent</li>
+                <li>module.exports</li>
+                <li>etc</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Process</h2>
+
+            <p>Information about process</p>
+            <ul>
+                <li>process.env</li>
+                <li>Event: 'uncaughtException'</li>
+                <li>Signal Events</li>
+                <li>process.stdout</li>
+                <li>process.stderr</li>
+                <li>process.stdin</li>
+                <li>process.argv</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Part 4. Built-in modules.</h2>
+        </section>
+
+        <section>
+            <h2>There are build-in modules for</h2>
+
+            <ul>
+                <li>Assertion Testing</li>
+                <li>Child Processes //Creating Child process</li>
+                <li>Cluster //Clusterization</li>
+                <li>Crypto</li>
+                <li>File System</li>
+                <li>HTTP //Creating servers</li>
+                <li>Path //Working with paths</li>
+                <li>Process </li>
+                <li>ZLIB //Archiving</li>
+                <li>and others</li>
+            </ul>
+            
+            <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            { src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            { src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src: 'plugin/zoom-js/zoom.js', async: true },
+            { src: 'plugin/notes/notes.js', async: true }
+        ]
+    });
+
+</script>
+
+</body>
 </html>
