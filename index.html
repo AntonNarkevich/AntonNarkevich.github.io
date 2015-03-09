@@ -42,6 +42,14 @@
         *[no-uppercase] {
             text-transform: none !important;
         }
+
+        * [red] {
+            color: rgba(255, 42, 22, 0.84);
+        }
+
+        h1, h2, h3, h4 {
+            color: #80bd01 !important;
+        }
     </style>
 </head>
 
@@ -53,26 +61,30 @@
     <div class="slides">
         <section>
             <h1>Node.js Basics</h1>
+
+            <img no-border="" src="logo.jpg" alt=""/>
         </section>
 
         <section>
             <h2>Contents</h2>
 
-            <ul>
-                <li>Node architecture.</li>
+            <ol>
+                <li>Node architecture</li>
                 <li>Asynchrony</li>
                 <li>Callbacks</li>
-            </ul>
+                <li>How to launch it</li>
+                <li>Globals</li>
+            </ol>
         </section>
 
         <section>
             <h2>Server-side JS platform that is:</h2>
             <ul>
-                <li>open source</li>
-                <li>cross-platform</li>
-                <li>non-blocking (async)</li>
-                <li>modular</li>
-                <li>scalable</li>
+                <li>Open source</li>
+                <li>Cross-platform</li>
+                <li>Non-blocking (async)</li>
+                <li>Modular</li>
+                <li>Scalable</li>
             </ul>
         </section>
 
@@ -94,14 +106,14 @@
 
         <section>
             <section>
-                <h2>Asynchronious. What does it mean?</h2>
+                <h2>Asynchronous. What does it mean?</h2>
             </section>
 
             <section>
-                <h2>Synchronious code:</h2>
+                <h2>Synchronous code:</h2>
 
                 <ol>
-                    <li>Sends request to DB.</li>
+                    <li>Sends request to DB</li>
                     <li>Waits for response i.e. thread.sleep()</li>
                     <li>Executes the code after DB call. (processes data)</li>
                 </ol>
@@ -114,11 +126,11 @@ console.log(data);
             </section>
 
             <section>
-                <h2>Asynchronious code:</h2>
+                <h2>Asynchronous code:</h2>
                 <ol>
-                    <li>Sends request to DB.</li>
-                    <li>Go on with other code.</li>
-                    <li>Response from DB come in any time on a callback.</li>
+                    <li>Sends request to DB</li>
+                    <li>Go on with other code</li>
+                    <li>Response from DB come in any time on a callback</li>
                 </ol>
 
                 <pre><code>
@@ -133,65 +145,7 @@ otherWork.do();//Immediately do this work.
         </section>
 
         <section>
-            <img src="eventLoop1.png" style="" alt=""/>
-
-            <aside>
-                Выполняет код, который ми пишем только один поток.
-                В отличие от Asp.Net MVC, где под каждый запрос создается поток.
-
-                Этот потом выполняет какую-то работу. Затем приходит к месту, где начинается
-                операция с OS. Останавливаестся и переходит к выолнению какой-то другой работы
-                из очереди выполнения. (Как в клиентском JavaScript)
-
-                Как только операция с OS завершена, фаерится событие и в очередь выполнения
-                поступает новая функция-колбек, в которую передается результат выполнения операции.
-            </aside>
-        </section>
-
-        <section>
-            <img src="eventLoop2.png" alt=""/>
-
-            <aside>
-                Т.е. Node.js + OS сами разбираются как эффективным образом испльзовать потоки,
-                чтобы выполнить эти тяжелые задачи максимально эффективно.
-
-                Основной же процесс завершения их не ждет а за это время обрабатывает как можно
-                большее число запросов.
-            </aside>
-        </section>
-
-        <section>
-            <h2>Gist</h2>
-
-            <p>We don't wait while file is being read.</p>
-            <p>We process requests.</p>
-
-            <p>We don't waste resources on creating processes.</p>
-
-            <aside>
-                В этом и состоит основная фишка асинхронности.
-                Это сейчас очень модно. Tornado, async/await в C# и т д.
-            </aside>
-        </section>
-
-        <section>
-            <h2>Performance growth</h2>
-            <img src="asyncGraph.png" alt=""/>
-
-            <aside>
-                По версии блога:
-                http://blog.stevensanderson.com/2010/01/25/measuring-the-performance-of-asynchronous-controllers/
-            </aside>
-        </section>
-
-        <section>
-            <h2>Specific</h2>
-
-            <p>Do not use Node.js for heavy computing.</p>
-        </section>
-
-        <section>
-            <h2>What is looks like?</h2>
+            <h2>This works asynchronously</h2>
             <pre><code>
 var fs = require('fs');
 
@@ -210,7 +164,7 @@ console.log("Do some other work. Process other request etc.");
         </section>
 
         <section>
-            <h2>Another example</h2>
+            <h2>More asynchrony</h2>
 
             <pre><code>
 var request = require('request');
@@ -221,51 +175,113 @@ for (var i = 0; i < 100; i += 1) {
         console.log("We should process results");
     });
 
-    console.log("Async operation in progress. We continue working");
+    console.log("Async operation in progress.");
+    console.log("We do other work.");
 }
             </code></pre>
         </section>
 
         <section>
-            <section>
-                <h2>Callbacks (Errbacks)</h2>
+            <h2>How it's implemented?</h2>
 
-                <h3>Takes 2 arguments</h3>
-                <ul>
-                    <li>First argument is error</li>
-                    <li>Second argument is the result</li>
-                    <li>Never pass both</li>
-                    <li>Error should be insanceof Error (troothy)</li>
-                </ul>
-            </section>
+            <img src="eventLoop1.png" style="" alt=""/>
 
-            <section>
-                <pre><code>
-request('http://www.google.com', function (err, response) {
+            <aside class="notes">
+                Выполняет код, который ми пишем только один поток.
+                В отличие от Asp.Net MVC, где под каждый запрос создается поток.
+
+                Этот потом выполняет какую-то работу. Затем приходит к месту, где начинается
+                операция с OS. Останавливаестся и переходит к выолнению какой-то другой работы
+                из очереди выполнения. (Как в клиентском JavaScript)
+
+                Как только операция с OS завершена, фаерится событие и в очередь выполнения
+                поступает новая функция-колбек, в которую передается результат выполнения операции.
+            </aside>
+        </section>
+
+        <section>
+            <img src="eventLoop2.png" height="600"  alt=""/>
+
+            <aside class="notes">
+                Т.е. Node.js + OS сами разбираются как эффективным образом испльзовать потоки,
+                чтобы выполнить эти тяжелые задачи максимально эффективно.
+
+                Основной же процесс завершения их не ждет а за это время обрабатывает как можно
+                большее число запросов.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Gist</h2>
+
+            <p>We don't wait while file is being read.</p>
+            <p>We process requests.</p>
+
+            <p>We don't waste resources on creating processes.</p>
+
+            <aside class="notes">
+                В этом и состоит основная фишка асинхронности.
+                Это сейчас очень модно. Tornado, async/await в C# и т д.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Performance growth</h2>
+            <img src="asyncGraph.png" alt=""/>
+
+            <p>According to the <a href="http://blog.stevensanderson.com/2010/01/25/measuring-the-performance-of-asynchronous-controllers/">blog post</a>.</p>
+        </section>
+
+        <section>
+            <h2>Specific</h2>
+
+            <p>Do not use Node.js for heavy computing.</p>
+
+            <img src="overload.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>Part 3. Callbacks</h2>
+
+            <p>Notice: Node style callback are called errbacks.</p>
+        </section>
+
+        <section>
+            <h2>Callbacks Rules <span no-uppercase red>!important;</span></h2>
+
+            <ul>
+                <li>First argument is error</li>
+                <li>Second argument is the result</li>
+                <li>Never pass both</li>
+                <li>Error should be insanceof Error (troothy)</li>
+            </ul>
+
+<pre><code>
+request.get('http://www.google.com', function (err, response) {
     if (err) {
         return console.error(err);
     }
 
     console.log('No errors, status is: ' + response.status);
 });
-                </code></pre>
-            </section>
+</code></pre>
 
-            <section>
-                <h2>Callbacks (Errbacks)</h2>
+        </section>
 
-                <ul>
-                    <li>Must be executed on the same tick of the event loop</li>
-                    <li>Must be passed as a last argument</li>
-                    <li>Returned value is ignored</li>
-                    <li>Must not throw any errors/ pass resulting errors</li>
-                    <li>Must never be called more than once</li>
-                </ul>
-            </section>
+        <section>
+            <h2>Callbacks (Errbacks) <span no-uppercase red>!important;</span></h2>
 
-            <section>
-                <img src="callbackPrincipals.png" alt=""/>
-            </section>
+            <ul>
+                <li>Must be executed on the same tick of the event loop</li>
+                <li>Must be passed as a last argument</li>
+                <li>Returned value is ignored</li>
+                <li>Must not throw any errors/ pass resulting errors</li>
+                <li>Must never be called more than once</li>
+            </ul>
+        </section>
+
+        <section>
+            <img src="callbackPrincipals.png" alt=""/>
 
             <aside class="notes">
                 https://www.youtube.com/watch?v=UsBng6yfiEQ
@@ -290,9 +306,8 @@ request('http://www.google.com', function (err, response) {
             </aside>
         </section>
 
-
         <section>
-            <h2>Part 2. How to Node.</h2>
+            <h2>Part 4. How to launch it</h2>
         </section>
 
         <section>
@@ -317,7 +332,7 @@ request('http://www.google.com', function (err, response) {
             <section>
                 <h2>package.json</h2>
 
-                <img src="packageJson2.png" alt=""/>
+                <img src="packageJson1.png" alt=""/>
 
                 <p>Use "npm init" to create it</p>
             </section>
@@ -377,15 +392,36 @@ console.log('Now we use it'.rainbow);
                 <pre><code>
 var util = require('util');
 
-var message = util.format('Format is very %s, I have used it %d times.',
-                    'useful', 1000);
+var message = util.format("Format is %s, I've used it %d times.",
+                    'cool', 1000);
+
 console.log(message);
 
-var message2 = util.format('It can convert %j to JSON.', {any: "object"});
+var message2 = util.format('It can convert %j to JSON.',
+                    {any: "object"});
 console.log(message2);
                 </code></pre>
 
                 <img src="util.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>There are build-in modules for</h2>
+
+                <ul>
+                    <li>Assertion Testing</li>
+                    <li>Child Processes //Creating Child process</li>
+                    <li>Cluster //Clusterization</li>
+                    <li>Crypto</li>
+                    <li>File System</li>
+                    <li>HTTP //Creating servers</li>
+                    <li>Path //Working with paths</li>
+                    <li>Process </li>
+                    <li>ZLIB //Archiving</li>
+                    <li>and others</li>
+                </ul>
+
+                <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
             </section>
 
             <section>
@@ -399,10 +435,9 @@ var greet = function (username) {
     return util.format("Hello, %s", username);
 };
 
-module.exports = {
-    greet: greet
-};
-
+module.exports = { greet: greet };
+                </code></pre>
+                <pre><code>
 //app.js
 var greeter = require('./greeter.js');
 
@@ -413,21 +448,23 @@ console.log(greeter.greet('Anton'));
             </section>
 
             <section>
-                <h2>So generally you can</h2>
+                <h2>So you can <span no-uppercase>require(..</span></h2>
 
                 <ul>
-                    <li>Require .js files (your modules)</li>
-                    <li>Require .json files (you'll get object)</li>
-                    <li>Require folders (if they contain index.js)</li>
-                    <li>Require standard modules e.g. util, fs</li>
-                    <li>Require from node_modules</li>
+                    <li>.js files (your modules)</li>
+                    <li>.json files (you'll get object)</li>
+                    <li>folders (if they contain index.js)</li>
+                    <li>standard modules (util, fs..)</li>
+                    <li>installed modules</li>
                 </ul>
+
+                <img style="float: right;" src="browserify.png" height="200" alt=""/>
             </section>
 
             <section>
-                <h2>It's trickier than you think.</h2>
+                <h2>But not so simple</h2>
 
-                <img src="require.png" alt=""/>
+                <img src="require.png" height="550" alt=""/>
             </section>
 
             <section>
@@ -487,11 +524,11 @@ console.log(greeter.greet('Anton'));
         </section>
 
         <section>
-            <h2>Part 3. Globals.</h2>
+            <h2>Part 5. Globals</h2>
         </section>
         
         <section>
-            <h2>There are a fhew global objects in Node.js.</h2>
+            <h2>global objects in Node.js</h2>
 
             <ul>
                 <li>global</li>
@@ -514,7 +551,7 @@ global.testDirectoryPath = path.join(__dirname, "test");
             </section>
 
             <section>
-                <h2>Difference between <span no-uppercase>'window'</span> and <span no-uppercase>'global'</span>.</h2>
+                <h2><span no-uppercase>'window'</span> and <span no-uppercase>'global'</span> are different</h2>
 
                 <pre><code>
 var x = 3; //Doesn't go to global;
@@ -589,7 +626,10 @@ module.exports = function () {}; //OK
 module.exports = { myFunction: function () {} } //OK
                 </code></pre>
 
-                <p>So use module.exports</p>
+                <p>So use module.exports.<br/> Because sometimes you'll need:</p>
+                <pre><code>
+var m = require('something')();
+                </code></pre>
             </section>
 
             <aside class="notes">
@@ -623,6 +663,8 @@ module.exports = { myFunction: function () {} } //OK
                 <li>module.exports</li>
                 <li>etc</li>
             </ul>
+
+            <img style="float: right;" src="modules.jpg" height="200" alt=""/>
         </section>
 
         <section>
@@ -638,31 +680,9 @@ module.exports = { myFunction: function () {} } //OK
                 <li>process.stdin</li>
                 <li>process.argv</li>
             </ul>
+
+            <img style="float: right;" src="process.jpg" height="200" alt=""/>
         </section>
-
-        <section>
-            <h2>Part 4. Built-in modules.</h2>
-        </section>
-
-        <section>
-            <h2>There are build-in modules for</h2>
-
-            <ul>
-                <li>Assertion Testing</li>
-                <li>Child Processes //Creating Child process</li>
-                <li>Cluster //Clusterization</li>
-                <li>Crypto</li>
-                <li>File System</li>
-                <li>HTTP //Creating servers</li>
-                <li>Path //Working with paths</li>
-                <li>Process </li>
-                <li>ZLIB //Archiving</li>
-                <li>and others</li>
-            </ul>
-            
-            <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
-        </section>
-
     </div>
 
 </div>
