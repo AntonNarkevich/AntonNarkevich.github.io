@@ -38,7 +38,7 @@
         *[no-border] {
             border: none !important;
         }
-        
+
         *[no-uppercase] {
             text-transform: none !important;
         }
@@ -87,6 +87,363 @@
                 <li>Scalable</li>
             </ul>
         </section>
+
+        <section>
+            <h2>Ryan Dahl</h2>
+
+            <img height="400" src="Ryan_Dahl.jpg" alt=""/>
+
+            <p>
+                Was first published in 2009.
+                Development and maintenance was spearheaded by Ryan Dahl and sponsored by Joyent.
+            </p>
+        </section>
+
+
+        <section>
+            <h2>History</h2>
+
+            <ul>
+                <li>2011 - npm was introduced</li>
+                <li>June 2011 - Microsoft + Joyent created a native Windows version</li>
+                <li>January 2012 - Isaac Schlueter (npm creator) became a lead.</li>
+                <li>In January 2014 - Timothy J Fontaine became a lead.</li>
+            </ul>
+
+            <img src="isaac.jpg" height="200" alt=""/>
+            <img src="fontain.jpeg" height="200" alt=""/>
+        </section>
+
+        <section>
+            <h2>io.js</h2>
+
+            <img src="iojs.png" alt=""/>
+
+            <p>Appeared in december 2014.</p>
+        </section>
+
+        <section>
+            <h2>Reasons</h2>
+
+            <ul>
+                <li>Old V8 version</li>
+                <li>No ES 6 features</li>
+                <li>Slow development</li>
+                <li>Strange version system</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>But it'll be ok</h2>
+
+            <p>There are rumors that io can be merged back into Node.js</p>
+        </section>
+
+        <section>
+            <h2>Part 4. How to launch it</h2>
+        </section>
+
+        <section>
+            <img no-border src="nodejsorg.png" alt=""/>
+        </section>
+
+        <section>
+            <h2>REPL</h2>
+            <img no-border src="repl.png" alt=""/>
+            <p>Stands for Read-Eval-Print-Loop</p>
+        </section>
+
+        <section>
+            <section>
+                <h2>NPM</h2>
+
+                <img no-border src="npm.png" alt=""/>
+
+                <p>Stands for Node Package Manager</p>
+            </section>
+
+            <section>
+                <h2>package.json</h2>
+
+                <img src="packageJson1.png" alt=""/>
+
+                <p>Use "npm init" to create it</p>
+            </section>
+
+            <section>
+                <h2>Select a module and install it</h2>
+
+                <img src="npmjsorg.png" alt=""/>
+
+                <p>"npm install [name]" or "npm install [name] --save"</p>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>It will appear in node_modules folder</p>
+                <img src="nodemodules.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>And will have it's own dependencies.</p>
+                <img src="nodemodules2.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+
+                <p>If you install module with --global flag.</p>
+                <p>You can get access to it's executable in cmd.</p>
+
+                <img src="nodemodules3.png" alt=""/>
+            </section>
+        </section>
+
+        <section>
+            <p>At this point you can write JavaScript.</p>
+
+            <img src="rhino.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>It works</h2>
+
+            <pre><code>
+var Animal = function (name) {
+    var self = this;
+    this.name = name;
+    this.sayHello = function () {
+        console.log('Hello, my name is ' + self.name);
+    }
+};
+
+var names = ['Bobik', 'Rex', 'Gesha'];
+names.forEach(function (name) {
+    var animal = new Animal(name);
+    animal.sayHello();
+});
+            </code></pre>
+
+            <p>With all closures, prototypes, setTimeouts etc.</p>
+        </section>
+
+        <section>
+            <h2>No cross-browser hacks</h2>
+
+            <p>It works absolutely the same everywhere.</p>
+
+            <img src="v8.jpg" height="300" alt=""/>
+
+        </section>
+
+        <section>
+            <section>
+                <h2>require standard module</h2>
+
+                <pre><code>
+var util = require('util');
+
+var message = util.format("Format is %s, I've used it %d times.",
+                    'cool', 1000);
+
+console.log(message);
+
+var message2 = util.format('It can convert %j to JSON.',
+                    {any: "object"});
+console.log(message2);
+                </code></pre>
+
+                <img src="util.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>There are build-in modules for</h2>
+
+                <ul>
+                    <li>Assertion Testing</li>
+                    <li>Child Processes //Creating Child process</li>
+                    <li>Cluster //Clusterization</li>
+                    <li>Crypto</li>
+                    <li>File System</li>
+                    <li>HTTP //Creating servers</li>
+                    <li>Path //Working with paths</li>
+                    <li>Process </li>
+                    <li>ZLIB //Archiving</li>
+                    <li>and others</li>
+                </ul>
+
+                <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
+            </section>
+
+            <section>
+                <h2>require installed module</h2>
+
+                <pre><code>
+npm install colors
+                </code></pre>
+
+                <pre><code>
+'use strict';
+var colors = require('colors');
+
+console.log('We have required module'.green);
+console.log('Now we use it'.rainbow);
+                </code></pre>
+
+                <img src="colors.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Create your modules</h2>
+
+                <pre><code>
+//greeter.js
+var util = require('util');
+var greet = function (username) {
+    return util.format("Hello, %s", username);
+};
+module.exports = { greet: greet };
+                </code></pre>
+                <pre><code>
+//app.js
+var greeter = require('./greeter.js');
+console.log(greeter.greet('Anton'));
+                </code></pre>
+
+                <img src="greeter.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>So you can <span no-uppercase>require(..</span></h2>
+
+                <ul>
+                    <li>.js files (your modules)</li>
+                    <li>.json files (you'll get object)</li>
+                    <li>folders (if they contain index.js)</li>
+                    <li>standard modules (util, fs..)</li>
+                    <li>installed modules</li>
+                </ul>
+
+                <img style="float: right;" src="browserify.png" height="200" alt=""/>
+            </section>
+
+            <section>
+                <h2>But not so simple</h2>
+
+                <img src="require.png" height="550" alt=""/>
+            </section>
+
+            <section>
+                <h2>And even trickier</h2>
+
+                <p>Check out <a href="https://nodejs.org/api/modules.html#modules_all_together">the Docks</a>.</p>
+            </section>
+
+            <aside class="notes">
+                Indeed this is a simplification. So check out the docks about require.
+                To get the general understanding.
+
+                https://nodejs.org/api/modules.html#modules_all_together
+
+                require(X) from module at path Y
+                1. If X is a core module,
+                a. return the core module
+                b. STOP
+                2. If X begins with './' or '/' or '../'
+                a. LOAD_AS_FILE(Y + X)
+                b. LOAD_AS_DIRECTORY(Y + X)
+                3. LOAD_NODE_MODULES(X, dirname(Y))
+                4. THROW "not found"
+
+                LOAD_AS_FILE(X)
+                1. If X is a file, load X as JavaScript text.  STOP
+                2. If X.js is a file, load X.js as JavaScript text.  STOP
+                3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+                4. If X.node is a file, load X.node as binary addon.  STOP
+
+                LOAD_AS_DIRECTORY(X)
+                1. If X/package.json is a file,
+                a. Parse X/package.json, and look for "main" field.
+                b. let M = X + (json main field)
+                c. LOAD_AS_FILE(M)
+                2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+                3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+                4. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+                LOAD_NODE_MODULES(X, START)
+                1. let DIRS=NODE_MODULES_PATHS(START)
+                2. for each DIR in DIRS:
+                a. LOAD_AS_FILE(DIR/X)
+                b. LOAD_AS_DIRECTORY(DIR/X)
+
+                NODE_MODULES_PATHS(START)
+                1. let PARTS = path split(START)
+                2. let I = count of PARTS - 1
+                3. let DIRS = []
+                4. while I >= 0,
+                a. if PARTS[I] = "node_modules" CONTINUE
+                c. DIR = path join(PARTS[0 .. I] + "node_modules")
+                b. DIRS = DIRS + DIR
+                c. let I = I - 1
+                5. return DIRS
+            </aside>
+        </section>
+
+        <section>
+            <section>
+                <h2>Node for utilities</h2>
+
+                <p>Extra easy to use</p>
+            </section>
+
+            <section>
+                <h2>Meet responsive tester</h2>
+
+                <pre><code>
+var webshot = require('webshot');
+var parseArgs = require('minimist');
+var util = require('util');
+var args = parseArgs(process.argv.slice(2));
+var resolutions = [320, 768, 1024];
+
+resolutions.forEach(function (resolution) {
+    var options = { screenSize: { width: resolution } };
+    var fileName = util.format('%s.%d.png', args.url, resolution);
+
+    webshot(args.url, fileName, options, function(err) {
+        if (err) { throw err; }
+        console.log('%dpx captured.', resolution);
+    });
+});
+                </code></pre>
+            </section>
+
+            <section>
+                <pre><code>
+node responsiveTester --url google.com
+                </code></pre>
+
+                <div>
+                    <img style="vertical-align: top;" src="google.com.1024.png" width="300" alt=""/>
+                    <img style="vertical-align: top;" src="google.com.768.png" width="300" alt=""/>
+                    <img style="vertical-align: top;" src="google.com.320.png" width="300" alt=""/>
+                </div>
+            </section>
+
+            <section>
+                <pre><code>
+node responsiveTester --url getbootstrap.com
+                </code></pre>
+
+                <div>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.1024.png" alt=""/>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.768.png" alt=""/>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.320.png" alt=""/>
+                </div>
+            </section>
+        </section>
+
 
         <section>
             <img src="arch.jpg" alt=""/>
@@ -307,226 +664,9 @@ request.get('http://www.google.com', function (err, response) {
         </section>
 
         <section>
-            <h2>Part 4. How to launch it</h2>
-        </section>
-
-        <section>
-            <img no-border src="nodejsorg.png" alt=""/>
-        </section>
-
-        <section>
-            <h2>REPL</h2>
-            <img no-border src="repl.png" alt=""/>
-            <p>Stands for Read-Eval-Print-Loop</p>
-        </section>
-
-        <section>
-            <section>
-                <h2>NPM</h2>
-
-                <img no-border src="npm.png" alt=""/>
-
-                <p>Stands for Node Package Manager</p>
-            </section>
-
-            <section>
-                <h2>package.json</h2>
-
-                <img src="packageJson1.png" alt=""/>
-
-                <p>Use "npm init" to create it</p>
-            </section>
-
-            <section>
-                <h2>Select a module and install it</h2>
-
-                <img src="npmjsorg.png" alt=""/>
-
-                <p>"npm install [name]" or "npm install [name] --save"</p>
-            </section>
-
-            <section>
-                <h2 style="text-transform: none">node_modules</h2>
-                <p>It will appear in node_modules folder</p>
-                <img src="nodemodules.png" alt=""/>
-            </section>
-
-            <section>
-                <h2 style="text-transform: none">node_modules</h2>
-                <p>And will have it's own dependencies.</p>
-                <img src="nodemodules2.png" alt=""/>
-            </section>
-
-            <section>
-                <h2 style="text-transform: none">node_modules</h2>
-
-                <p>If you install module with --global flag.</p>
-                <p>You can get access to it's executable in cmd.</p>
-
-                <img src="nodemodules3.png" alt=""/>
-            </section>
-        </section>
-
-        <section>
-            <section>
-                <h2>require installed module</h2>
-
-                <pre><code>
-npm install colors
-                </code></pre>
-
-                <pre><code>
-'use strict';
-var colors = require('colors');
-
-console.log('We have required module'.green);
-console.log('Now we use it'.rainbow);
-                </code></pre>
-
-                <img src="colors.png" alt=""/>
-            </section>
-
-            <section>
-                <h2>require standard module</h2>
-
-                <pre><code>
-var util = require('util');
-
-var message = util.format("Format is %s, I've used it %d times.",
-                    'cool', 1000);
-
-console.log(message);
-
-var message2 = util.format('It can convert %j to JSON.',
-                    {any: "object"});
-console.log(message2);
-                </code></pre>
-
-                <img src="util.png" alt=""/>
-            </section>
-
-            <section>
-                <h2>There are build-in modules for</h2>
-
-                <ul>
-                    <li>Assertion Testing</li>
-                    <li>Child Processes //Creating Child process</li>
-                    <li>Cluster //Clusterization</li>
-                    <li>Crypto</li>
-                    <li>File System</li>
-                    <li>HTTP //Creating servers</li>
-                    <li>Path //Working with paths</li>
-                    <li>Process </li>
-                    <li>ZLIB //Archiving</li>
-                    <li>and others</li>
-                </ul>
-
-                <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
-            </section>
-
-            <section>
-                Of cause you can create modules.
-
-                <pre><code>
-//greeter.js
-var util = require('util');
-
-var greet = function (username) {
-    return util.format("Hello, %s", username);
-};
-
-module.exports = { greet: greet };
-                </code></pre>
-                <pre><code>
-//app.js
-var greeter = require('./greeter.js');
-
-console.log(greeter.greet('Anton'));
-                </code></pre>
-
-                <img src="greeter.png" alt=""/>
-            </section>
-
-            <section>
-                <h2>So you can <span no-uppercase>require(..</span></h2>
-
-                <ul>
-                    <li>.js files (your modules)</li>
-                    <li>.json files (you'll get object)</li>
-                    <li>folders (if they contain index.js)</li>
-                    <li>standard modules (util, fs..)</li>
-                    <li>installed modules</li>
-                </ul>
-
-                <img style="float: right;" src="browserify.png" height="200" alt=""/>
-            </section>
-
-            <section>
-                <h2>But not so simple</h2>
-
-                <img src="require.png" height="550" alt=""/>
-            </section>
-
-            <section>
-                <h2>And even trickier</h2>
-
-                <p>Check out <a href="https://nodejs.org/api/modules.html#modules_all_together">the Docks</a>.</p>
-            </section>
-
-            <aside class="notes">
-                Indeed this is a simplification. So check out the docks about require.
-                To get the general understanding.
-
-                https://nodejs.org/api/modules.html#modules_all_together
-
-                require(X) from module at path Y
-                1. If X is a core module,
-                a. return the core module
-                b. STOP
-                2. If X begins with './' or '/' or '../'
-                a. LOAD_AS_FILE(Y + X)
-                b. LOAD_AS_DIRECTORY(Y + X)
-                3. LOAD_NODE_MODULES(X, dirname(Y))
-                4. THROW "not found"
-
-                LOAD_AS_FILE(X)
-                1. If X is a file, load X as JavaScript text.  STOP
-                2. If X.js is a file, load X.js as JavaScript text.  STOP
-                3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
-                4. If X.node is a file, load X.node as binary addon.  STOP
-
-                LOAD_AS_DIRECTORY(X)
-                1. If X/package.json is a file,
-                a. Parse X/package.json, and look for "main" field.
-                b. let M = X + (json main field)
-                c. LOAD_AS_FILE(M)
-                2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
-                3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
-                4. If X/index.node is a file, load X/index.node as binary addon.  STOP
-
-                LOAD_NODE_MODULES(X, START)
-                1. let DIRS=NODE_MODULES_PATHS(START)
-                2. for each DIR in DIRS:
-                a. LOAD_AS_FILE(DIR/X)
-                b. LOAD_AS_DIRECTORY(DIR/X)
-
-                NODE_MODULES_PATHS(START)
-                1. let PARTS = path split(START)
-                2. let I = count of PARTS - 1
-                3. let DIRS = []
-                4. while I >= 0,
-                a. if PARTS[I] = "node_modules" CONTINUE
-                c. DIR = path join(PARTS[0 .. I] + "node_modules")
-                b. DIRS = DIRS + DIR
-                c. let I = I - 1
-                5. return DIRS
-            </aside>
-        </section>
-
-        <section>
             <h2>Part 5. Globals</h2>
         </section>
-        
+
         <section>
             <h2>global objects in Node.js</h2>
 
@@ -537,7 +677,7 @@ console.log(greeter.greet('Anton'));
                 <li>process</li>
             </ul>
         </section>
-        
+
         <section>
             <section>
                 <h2 no-uppercase>global</h2>
@@ -682,6 +822,29 @@ var m = require('something')();
             </ul>
 
             <img style="float: right;" src="process.jpg" height="200" alt=""/>
+        </section>
+
+        <section>
+            <h2>Part 6. Hello world</h2>
+        </section>
+
+        <section>
+            <h2>HTTP Server</h2>
+
+            <pre><code>
+var http = require('http');
+
+var server = http.createServer(function (request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('Hello World');
+});
+
+server.listen(3000, function() {
+    console.log("Server has been started.");
+});
+            </code></pre>
+
+            <img src="helloWorld.png" alt=""/>
         </section>
     </div>
 
