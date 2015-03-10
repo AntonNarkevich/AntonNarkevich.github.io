@@ -50,6 +50,10 @@
         h1, h2, h3, h4 {
             color: #80bd01 !important;
         }
+
+        * [green] {
+            color: #80bd01 !important;
+        }
     </style>
 </head>
 
@@ -167,6 +171,80 @@
             </section>
 
             <section>
+                <h2>Enormous amount of packages</h2>
+
+                <ul>
+                    <li><span green>131 386</span> total packages</li>
+                    <li><span green>33 559 621</span> downloads in the last day</li>
+                    <li><span green>203 826 015</span> downloads in the last week</li>
+                    <li><span green>1 022 396 159</span> downloads in the last month</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>npm map</h2>
+
+                <img src="npmmap.png" height="550" alt=""/>
+            </section>
+
+            <section>
+                <h2>There is all you need</h2>
+            </section>
+
+            <section>
+                <h2>Data access</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="postgresql.png" alt="Postgresql"/>
+                    <img height="200" style="background: white;" src="redis.png" alt="Redis"/>
+                    <img height="200" style="background: white;" src="mongo-db-logo.png" alt="Mongo DB"/>
+                    <img height="200" style="background: white;" src="mssql.png" alt="MSSQL"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Facilities</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="underscore.png" alt="Underscore"/>
+                    <img height="200" style="background: white;" src="coffee.jpg" alt="Coffee Scri4pt"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Testing</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="casper.jpg" alt="Casper.js"/>
+                    <img height="200" style="background: white;" src="mocha.png" alt="Mocha"/>
+                    <img height="200" style="background: white;" src="jasmine.png" alt="Jasmine"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Styling</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="saas-logo.png" alt="SASS"/>
+                    <img height="200" style="background: white;" src="stylus.png" alt="Stylus"/>
+                    <img height="200" style="background: white;" src="css-comb-logo.png" alt="CSSComb"/>
+                    <img height="200" style="background: white;" src="less-logo.png" alt="Less"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Markup</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="handlebars_logo.png" alt="Handlebars"/>
+                    <img height="200" style="background: white;" src="jade-logo.png" alt="Jade"/>
+                    <img height="200" style="background: white;" src="smarty.jpg" alt="Smarty"/>
+                    <img height="200" style="background: white;" src="ejs-logo-b300.png" alt="EJS"/>
+                </div>
+            </section>
+
+
+            <section>
                 <h2>package.json</h2>
 
                 <img src="packageJson1.png" alt=""/>
@@ -180,6 +258,14 @@
                 <img src="npmjsorg.png" alt=""/>
 
                 <p>"npm install [name]" or "npm install [name] --save"</p>
+            </section>
+
+            <section>
+                <h2>Another way to search for packages</h2>
+
+                <img src="nodejsmodules.png" height="400" alt=""/>
+
+                <p>Here is the <a href="http://nodejsmodules.org/">link</a>.</p>
             </section>
 
             <section>
@@ -197,10 +283,17 @@
             <section>
                 <h2 style="text-transform: none">node_modules</h2>
 
-                <p>If you install module with --global flag.</p>
-                <p>You can get access to it's executable in cmd.</p>
+                <pre><code>
+npm install [name] --global
+                </code></pre>
+                <p>You can get access to it's executable in cmd.
 
                 <img src="nodemodules3.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Notice</h2>
+                <p>PATH should be set properly.</p>
             </section>
         </section>
 
@@ -581,6 +674,8 @@ for (var i = 0; i < 100; i += 1) {
 
             <p>We don't waste resources on creating processes.</p>
 
+            <img src="async.png" alt=""/>
+
             <aside class="notes">
                 В этом и состоит основная фишка асинхронности.
                 Это сейчас очень модно. Tornado, async/await в C# и т д.
@@ -606,6 +701,8 @@ for (var i = 0; i < 100; i += 1) {
             <h2>Part 4. Callbacks</h2>
 
             <p>Notice: Node style callback are called errbacks.</p>
+
+            <img src="joker-async.jpg" height="300" alt=""/>
         </section>
 
         <section>
@@ -634,7 +731,7 @@ request.get('http://www.google.com', function (err, response) {
             <h2>Callbacks (Errbacks) <span no-uppercase red>!important;</span></h2>
 
             <ul>
-                <li>Must be executed on the same tick of the event loop</li>
+                <li>Must not be executed on the same tick of the event loop</li>
                 <li>Must be passed as a last argument</li>
                 <li>Returned value is ignored</li>
                 <li>Must not throw any errors/ pass resulting errors</li>
@@ -706,6 +803,18 @@ global.z = 5; //Goes to global, evident;
 
                 <p>Node's modules are wrapped in a closure, which is evaluated in the
                     this-context of the exports object.</p>
+            </section>
+
+            <section>
+                <h2>Trend</h2>
+
+                <p>A lot of modern libs work both: on front and back end.</p>
+
+                <pre><code>
+if (global) {
+    //We are in node environment.
+}
+                </code></pre>
             </section>
         </section>
 
@@ -851,6 +960,12 @@ server.listen(3000, function() {
 
             <img src="helloWorld.png" alt=""/>
         </section>
+    
+    <section>
+        <h2>Any Questions?</h2>
+
+        <img src="thanks.jpg" alt=""/>
+    </section>
     </div>
 
 </div>
