@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Node.js: Development Essentials</title>
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css" id="theme">
+        <link rel="stylesheet" href="css/custom.css">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <div class="slides">
+                <section>
+                    <h1>Node.js</h1>
+                    <h3>Development Essentials</h3>
+                </section>
+                <section>
+                    <h1>Plan</h1>
+                    <ul>
+                        <li>
+                            Managing asynchronous code
+                            <ul>
+                                <li>Callback hell</li>
+                                <li>Async.js</li>
+                                <li>Promises</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Callbacks</h1>
+                    <p>Javascript uses callback functions to handle asynchronous control flow</p>
+                </section>
+
+                <section>
+                    <h1>Callback example</h1>
+
+                        <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var fs = require('fs');
+
+fs.readFile('my-file.txt', function(err, data) {
+    if(err) {
+        console.log(err);
+    }
+
+    console.log(data);
+});
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h1>Callback Hell</h1>
+
+                    <p>Working with callbacks, nesting can get out of control</p>
+                </section>
+                <section>
+                    <h1>Callback Hell</h1>
+
+                        <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+myFunc1(function(err, data) {
+    myFunc2(function(err, data) {
+        myFunc3(function(err, data) {
+            myFunc4(function(err, data) {
+                myFunc5(function(err, data) {
+                    myFunc6(function(err, data) {
+                        //do something
+                    });
+                });
+            });
+        });
+    });
+});
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h1>Callback Hell</h1>
+                        <pre class="devil"><code class="javascript hell-bg" data-trim contenteditable style="font-size: 18px;">
+myFunc1(function(err, data) {
+    myFunc2(function(err, data) {
+        myFunc3(function(err, data) {
+            myFunc4(function(err, data) {
+                myFunc5(function(err, data) {
+                    myFunc6(function(err, data) {
+                        //do something
+                    });
+                });
+            });
+        });
+    });
+});
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>A more real example</h2>
+                    <pre class="devil"><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+fs.readdir(source, function(err, files) {
+  if (err) {
+    console.log('Error finding files: ' + err)
+  } else {
+    files.forEach(function(filename, fileIndex) {
+      console.log(filename)
+      gm(source + filename).size(function(err, values) {
+        if (err) {
+          console.log('Error identifying file size: ' + err)
+        } else {
+          console.log(filename + ' : ' + values)
+          aspect = (values.width / values.height)
+          widths.forEach(function(width, widthIndex) {
+            height = Math.round(width / aspect)
+            console.log('resizing ' + filename + 'to ' + height + 'x' + height)
+            this.resize(width, height).write(destination + 'w' + width + '_' + filename, function(err) {
+              if (err) console.log('Error writing file: ' + err)
+            })
+          }.bind(this))
+        }
+      })
+    })
+  }
+})
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Best case it's linear</h2>
+                    <img src="img/linear.svg" />
+                </section>
+
+                <section>
+                    <h2>Worth case</h2>
+                    <img src="img/parallel.svg" />
+                </section>
+
+                <section>
+                    <h2>Challenges</h2>
+
+                    <ul>
+                        <li>The order of function calls is not defined</li>
+                        <li>Hard to get return data back together</li>
+                        <li>Error handling brings a lot of code</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Solutions</h1>
+
+                    <ul>
+                        <li>You can make this easier to read by separating anonymous functions</li>
+                        <li>Passing function references instead of anonymous functions helps even more</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h2>We can turn this code</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var db = require('somedatabaseprovider');
+//get recent posts
+http.get('/recentposts', function(req, res) {
+    // open database connection
+    db.openConnection('host', creds,function(err, conn){
+        conn.query('select * from users where id='+res.param['posts'].userId, function(err,users){
+            conn.close();
+            res.send(users[0]);
+        });
+    });
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>into this</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var db = require('somedatabaseprovider');
+
+http.get('/recentposts', afterRecentPosts);
+
+function afterRecentPosts(req, res) {
+    db.openConnection('host', creds, function(err, conn) {
+        afterDBConnected(res, conn); }
+    );
+}
+
+function afterDBConnected(err, conn) {
+    conn.query('select * from users where id=' + res.param['post'].userId, afterQuery);
+}
+
+function afterQuery(err, results) {
+    conn.close();
+    res.send(results[0]);
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Good start, but...</h1>
+                    <p>Not good enough</p>
+                </section>
+
+                <section>
+                    <h2>Demo</h2>
+                    <img src="examples/flow.svg"/>
+                </section>
+
+                <section>
+                    <h1>Async.js</h1>
+                    <ul>
+                        <li>Async.js provides common patterns for asynchronous code control flow </li>
+                        <li>Also provides some common functional programming paradigms</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Async.js</h1>
+                    <pre><code data-trim contenteditable style="font-size: 18px;">
+npm install async
+                    </code></pre>
+                    <p>
+                        Works in the browser as well
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Async: series</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+async.series([
+    function(callback){
+        // do some stuff ...
+        callback(null, 'one');
+    },
+    function(callback){
+        // do some more stuff ...
+        callback(null, 'two');
+    }],
+    // optional callback
+    function(err, results){
+    // results is now equal to ['one', 'two']
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Async: parallel</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+async.parallel([
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'one');
+        }, 200);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'two');
+        }, 100);
+    }],
+    // optional callback
+    function(err, results){
+    // the results array will equal ['one','two'] even though
+    // the second function had a shorter timeout.
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Async: waterfall</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+async.waterfall([
+    function(callback) {
+        callback(null, 'one', 'two');
+    },
+    function(arg1, arg2, callback) {
+        // arg1 now equals 'one' and arg2 now equals 'two'
+        callback(null, 'three');
+    },
+    function(arg1, callback) {
+        // arg1 now equals 'three'
+        callback(null, 'done');
+    }
+], function (err, result) {
+    // result now equals 'done'
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Demo</h2>
+
+                    <img src="img/code.jpg"/>
+                </section>
+
+                <section>
+                    <h2>Useful for array tasks</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+async.map(['file1','file2','file3'], fs.stat, function(err, results){
+    // results is now an array of stats for each file
+});
+
+async.filter(['file1','file2','file3'], fs.exists, function(results){
+    // results now equals an array of the existing files
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Promises</h1>
+
+                    <ul>
+                        <li>
+                            <a href="https://github.com/promises-aplus/promises-spec">Promises/A+</a> - an open standard for sound, interoperable JavaScript promises
+                        </li>
+                        <li>
+                            Libraries:
+                            <ul>
+                                <li><a href="https://github.com/kriskowal/q">Q</a></li>
+                                <li><a href="https://github.com/cujojs/when">when</a></li>
+                                <li><a href="http://msdn.microsoft.com/en-us/library/windows/apps/br211867.aspx">WinJS</a></li>
+                                <li><a href="https://github.com/tildeio/rsvp.js">RSVP.js</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            From the box in browsers soon
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Q</h1>
+
+                    <pre><code data-trim contenteditable style="font-size: 18px;">
+npm install q
+                    </code></pre>
+                    <p>
+                        Works in the browser as well
+                    </p>
+                </section>
+                <section>
+                    <h1>Promise states</h1>
+                    <ul>
+                        <li>fulfilled</li>
+                        <li>rejected</li>
+                        <li>pending</li>
+                        <li>settled</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Q: Propagation</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var outputPromise = getInputPromise()
+    .then(function (input) {
+    });
+                    </code></pre>
+                    <ul>
+                        <li>If you return a value in a handler, outputPromise will get fulfilled.</li>
+                        <li>If you throw an exception in a handler, outputPromise will get rejected.</li>
+                        <li>If you return a promise in a handler, outputPromise will "become" that promise.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Q: Chaining</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+doStep1()
+.then(promisedStep2)
+.then(promisedStep3)
+.then(promisedStep4)
+.then(function (value4) {
+    // Do something with value4
+})
+.catch(function (error) {
+    // Handle any error from all above steps
+})
+.done();
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Q: all</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+return Q.all([
+    myFunc1(),
+    myFync2()
+]).then(function(results){
+    console.log(results[0]);
+    console.log(results[1]);
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Q: allSettled</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+Q.allSettled(promises)
+.then(function (results) {
+    results.forEach(function (result) {
+        if (result.state === "fulfilled") {
+            var value = result.value;
+        } else {
+            var reason = result.reason;
+        }
+    });
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Q: any</h2>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+Q.any(promises)
+.then(function (first) {
+    // Any of the promises was fulfilled.
+}, function (error) {
+    // All of the promises were rejected.
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Q: Handling Errors</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+return foo()
+.then(function (value) {
+    throw new Error("Can't bar.");
+}, function (error) {
+    // We only get here if "foo" fails
+});
+
+return foo()
+.then(function (value) {
+    throw new Error("Can't bar.");
+})
+.fail(function (error) {
+    // We get here with either foo's error or bar's error
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Q: Progress Notification</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+return uploadFile()
+.then(function () {
+    // Success uploading the file
+}, function (err) {
+    // There was an error, and we get the reason for error
+}, function (progress) {
+    // We get notified of the upload's progress as it is executed
+});
+
+//OR
+
+return uploadFile().progress(function (progress) {
+    // We get notified of the upload's progress
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Q: Using Deferreds</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var deferred = Q.defer();
+fs.readFile("foo.txt", "utf-8", function (error, text) {
+    if (error) {
+        deferred.reject(new Error(error));
+    } else {
+        deferred.resolve(text);
+    }
+});
+return deferred.promise;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Demo</h2>
+
+                    <img src="img/code.jpg"/>
+                </section>
+
+                <section>
+                    <h1>Q: denodeify</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+var readFile = Q.nfbind(fs.readFile); // or Q.denodeify
+
+readFile("foo.txt", "utf-8").done(function (text) {
+
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Q: static methods</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+Q.when(5).then(function(res) {
+    //res is 5
+});
+
+Q(5).then(function(res) {
+    //res is 5
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Generators</h1>
+                    <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+function* foo(x) {
+    yield x + 1;
+
+    var y = yield null;
+    return x + y;
+}
+
+var gen = foo(5);
+gen.next(); // { value: 6, done: false }
+gen.next(); // { value: null, done: false }
+gen.send(8); // { value: 13, done: true }
+                    </code></pre>
+                </section>
+
+                 <section>
+                    <h2>Demo</h2>
+
+                    <img src="img/code.jpg"/>
+                </section>
+                
+                <section>
+                    <h1>Tasks</h1>
+                </section>
+            </div>
+
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                // Optional reveal.js plugins
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>

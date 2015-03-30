@@ -1,0 +1,30 @@
+.reveal section h1,
+.reveal section h2 {
+    color: #80bd01;
+}
+
+.reveal pre code.hell-bg {
+    background: url(../img/hell.jpg);
+    background-size: cover;
+}
+
+.devil {
+    position: relative;
+}
+
+.devil:after {
+    position: absolute;
+    content: ' ';
+    width: 200px;
+    height: 173px;
+
+    background: url(../img/devil.png);
+    background-size: contain;
+    top: 0;
+    right: -100px;
+}
+
+.reveal section img {
+    border: none;
+    background: white;
+}
