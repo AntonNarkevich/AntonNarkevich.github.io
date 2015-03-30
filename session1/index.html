@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>reveal.js - The HTML Presentation Framework</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style>
+        *[no-border] {
+            border: none !important;
+        }
+
+        *[no-uppercase] {
+            text-transform: none !important;
+        }
+
+        * [red] {
+            color: rgba(255, 42, 22, 0.84);
+        }
+
+        h1, h2, h3, h4 {
+            color: #80bd01 !important;
+        }
+
+        * [green] {
+            color: #80bd01 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>Node.js Basics</h1>
+
+            <img no-border="" src="logo.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>Contents</h2>
+
+            <ol>
+                <li>Introduction</li>
+                <li>How to launch it</li>
+                <li>Asynchrony</li>
+                <li>Callbacks</li>
+                <li>Globals</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Part 1. Introduction</h2>
+        </section>
+
+        <section>
+            <h2>Server-side JS platform that is:</h2>
+            <ul>
+                <li>Open source</li>
+                <li>Cross-platform</li>
+                <li>Non-blocking (async)</li>
+                <li>Modular</li>
+                <li>Scalable</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Ryan Dahl</h2>
+
+            <img height="400" src="Ryan_Dahl.jpg" alt=""/>
+
+            <p>
+                Was first published in 2009.
+                Development and maintenance was spearheaded by Ryan Dahl and sponsored by Joyent.
+            </p>
+        </section>
+
+
+        <section>
+            <h2>History</h2>
+
+            <ul>
+                <li>2011 - npm was introduced</li>
+                <li>June 2011 - Microsoft + Joyent created a native Windows version</li>
+                <li>January 2012 - Isaac Schlueter (npm creator) became a lead.</li>
+                <li>In January 2014 - Timothy J Fontaine became a lead.</li>
+            </ul>
+
+            <img src="isaac.jpg" height="200" alt=""/>
+            <img src="fontain.jpeg" height="200" alt=""/>
+        </section>
+
+        <section>
+            <h2>io.js</h2>
+
+            <img src="iojs.png" alt=""/>
+
+            <p>Appeared in december 2014.</p>
+        </section>
+
+        <section>
+            <h2>Reasons</h2>
+
+            <ul>
+                <li>Old V8 version</li>
+                <li>No ES 6 features</li>
+                <li>Slow development</li>
+                <li>Strange version system</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>But it'll be ok</h2>
+
+            <p>There are rumors that io can be merged back into Node.js</p>
+        </section>
+
+        <section>
+            <h2>Part 2. How to launch it</h2>
+        </section>
+
+        <section>
+            <img no-border src="nodejsorg.png" alt=""/>
+        </section>
+
+        <section>
+            <h2>REPL</h2>
+            <img no-border src="repl.png" alt=""/>
+            <p>Stands for Read-Eval-Print-Loop</p>
+        </section>
+
+        <section>
+            <section>
+                <h2>NPM</h2>
+
+                <img no-border src="npm.png" alt=""/>
+
+                <p>Stands for Node Package Manager</p>
+            </section>
+
+            <section>
+                <h2>Enormous amount of packages</h2>
+
+                <ul>
+                    <li><span green>131 386</span> total packages</li>
+                    <li><span green>33 559 621</span> downloads in the last day</li>
+                    <li><span green>203 826 015</span> downloads in the last week</li>
+                    <li><span green>1 022 396 159</span> downloads in the last month</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>npm map</h2>
+
+                <img src="npmmap.png" height="550" alt=""/>
+            </section>
+
+            <section>
+                <h2>There is all you need</h2>
+            </section>
+
+            <section>
+                <h2>Data access</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="postgresql.png" alt="Postgresql"/>
+                    <img height="200" style="background: white;" src="redis.png" alt="Redis"/>
+                    <img height="200" style="background: white;" src="mongo-db-logo.png" alt="Mongo DB"/>
+                    <img height="200" style="background: white;" src="mssql.png" alt="MSSQL"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Facilities</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="underscore.png" alt="Underscore"/>
+                    <img height="200" style="background: white;" src="coffee.jpg" alt="Coffee Scri4pt"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Testing</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="casper.jpg" alt="Casper.js"/>
+                    <img height="200" style="background: white;" src="mocha.png" alt="Mocha"/>
+                    <img height="200" style="background: white;" src="jasmine.png" alt="Jasmine"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Styling</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="saas-logo.png" alt="SASS"/>
+                    <img height="200" style="background: white;" src="stylus.png" alt="Stylus"/>
+                    <img height="200" style="background: white;" src="css-comb-logo.png" alt="CSSComb"/>
+                    <img height="200" style="background: white;" src="less-logo.png" alt="Less"/>
+                </div>
+            </section>
+
+            <section>
+                <h2>Markup</h2>
+
+                <div class="galery">
+                    <img height="200" style="background: white;" src="handlebars_logo.png" alt="Handlebars"/>
+                    <img height="200" style="background: white;" src="jade-logo.png" alt="Jade"/>
+                    <img height="200" style="background: white;" src="smarty.jpg" alt="Smarty"/>
+                    <img height="200" style="background: white;" src="ejs-logo-b300.png" alt="EJS"/>
+                </div>
+            </section>
+
+
+            <section>
+                <h2>package.json</h2>
+
+                <img src="packageJson1.png" alt=""/>
+
+                <p>Use "npm init" to create it</p>
+            </section>
+
+            <section>
+                <h2>Select a module and install it</h2>
+
+                <img src="npmjsorg.png" alt=""/>
+
+                <p>"npm install [name]" or "npm install [name] --save"</p>
+            </section>
+
+            <section>
+                <h2>Another way to search for packages</h2>
+
+                <img src="nodejsmodules.png" height="400" alt=""/>
+
+                <p>Here is the <a href="http://nodejsmodules.org/">link</a>.</p>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>It will appear in node_modules folder</p>
+                <img src="nodemodules.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+                <p>And will have it's own dependencies.</p>
+                <img src="nodemodules2.png" alt=""/>
+            </section>
+
+            <section>
+                <h2 style="text-transform: none">node_modules</h2>
+
+                <pre><code>
+npm install [name] --global
+                </code></pre>
+                <p>You can get access to it's executable in cmd.
+
+                <img src="nodemodules3.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Notice</h2>
+                <p>PATH should be set properly.</p>
+            </section>
+        </section>
+
+        <section>
+            <p>At this point you can write JavaScript.</p>
+
+            <img src="rhino.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>It works</h2>
+
+            <pre><code>
+var Animal = function (name) {
+    var self = this;
+    this.name = name;
+    this.sayHello = function () {
+        console.log('Hello, my name is ' + self.name);
+    }
+};
+
+var names = ['Bobik', 'Rex', 'Gesha'];
+names.forEach(function (name) {
+    var animal = new Animal(name);
+    animal.sayHello();
+});
+            </code></pre>
+
+            <p>With all closures, prototypes, setTimeouts etc.</p>
+        </section>
+
+        <section>
+            <h2>No cross-browser hacks</h2>
+
+            <p>It works absolutely the same everywhere.</p>
+
+            <img src="v8.jpg" height="300" alt=""/>
+
+        </section>
+
+        <section>
+            <section>
+                <h2>require standard module</h2>
+
+                <pre><code>
+var util = require('util');
+
+var message = util.format("Format is %s, I've used it %d times.",
+                    'cool', 1000);
+
+console.log(message);
+
+var message2 = util.format('It can convert %j to JSON.',
+                    {any: "object"});
+console.log(message2);
+                </code></pre>
+
+                <img src="util.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>There are build-in modules for</h2>
+
+                <ul>
+                    <li>Assertion Testing</li>
+                    <li>Child Processes //Creating Child process</li>
+                    <li>Cluster //Clusterization</li>
+                    <li>Crypto</li>
+                    <li>File System</li>
+                    <li>HTTP //Creating servers</li>
+                    <li>Path //Working with paths</li>
+                    <li>Process </li>
+                    <li>ZLIB //Archiving</li>
+                    <li>and others</li>
+                </ul>
+
+                <p>Check out <a href="https://nodejs.org/api/">the API Docks</a>.</p>
+            </section>
+
+            <section>
+                <h2>require installed module</h2>
+
+                <pre><code>
+npm install colors
+                </code></pre>
+
+                <pre><code>
+'use strict';
+var colors = require('colors');
+
+console.log('We have required module'.green);
+console.log('Now we use it'.rainbow);
+                </code></pre>
+
+                <img src="colors.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Create your modules</h2>
+
+                <pre><code>
+//greeter.js
+var util = require('util');
+var greet = function (username) {
+    return util.format("Hello, %s", username);
+};
+module.exports = { greet: greet };
+                </code></pre>
+                <pre><code>
+//app.js
+var greeter = require('./greeter.js');
+console.log(greeter.greet('Anton'));
+                </code></pre>
+
+                <img src="greeter.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>So you can <span no-uppercase>require(..</span></h2>
+
+                <ul>
+                    <li>.js files (your modules)</li>
+                    <li>.json files (you'll get object)</li>
+                    <li>folders (if they contain index.js)</li>
+                    <li>standard modules (util, fs..)</li>
+                    <li>installed modules</li>
+                </ul>
+
+                <img style="float: right;" src="browserify.png" height="200" alt=""/>
+            </section>
+
+            <section>
+                <h2>But not so simple</h2>
+
+                <img src="require.png" height="550" alt=""/>
+            </section>
+
+            <section>
+                <h2>And even trickier</h2>
+
+                <p>Check out <a href="https://nodejs.org/api/modules.html#modules_all_together">the Docks</a>.</p>
+            </section>
+
+            <aside class="notes">
+                Indeed this is a simplification. So check out the docks about require.
+                To get the general understanding.
+
+                https://nodejs.org/api/modules.html#modules_all_together
+
+                require(X) from module at path Y
+                1. If X is a core module,
+                a. return the core module
+                b. STOP
+                2. If X begins with './' or '/' or '../'
+                a. LOAD_AS_FILE(Y + X)
+                b. LOAD_AS_DIRECTORY(Y + X)
+                3. LOAD_NODE_MODULES(X, dirname(Y))
+                4. THROW "not found"
+
+                LOAD_AS_FILE(X)
+                1. If X is a file, load X as JavaScript text.  STOP
+                2. If X.js is a file, load X.js as JavaScript text.  STOP
+                3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+                4. If X.node is a file, load X.node as binary addon.  STOP
+
+                LOAD_AS_DIRECTORY(X)
+                1. If X/package.json is a file,
+                a. Parse X/package.json, and look for "main" field.
+                b. let M = X + (json main field)
+                c. LOAD_AS_FILE(M)
+                2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+                3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+                4. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+                LOAD_NODE_MODULES(X, START)
+                1. let DIRS=NODE_MODULES_PATHS(START)
+                2. for each DIR in DIRS:
+                a. LOAD_AS_FILE(DIR/X)
+                b. LOAD_AS_DIRECTORY(DIR/X)
+
+                NODE_MODULES_PATHS(START)
+                1. let PARTS = path split(START)
+                2. let I = count of PARTS - 1
+                3. let DIRS = []
+                4. while I >= 0,
+                a. if PARTS[I] = "node_modules" CONTINUE
+                c. DIR = path join(PARTS[0 .. I] + "node_modules")
+                b. DIRS = DIRS + DIR
+                c. let I = I - 1
+                5. return DIRS
+            </aside>
+        </section>
+
+        <section>
+            <section>
+                <h2>Node for utilities</h2>
+
+                <p>Extra easy to use</p>
+            </section>
+
+            <section>
+                <h2>Meet responsive tester</h2>
+
+                <pre><code>
+var webshot = require('webshot');
+var parseArgs = require('minimist');
+var util = require('util');
+var args = parseArgs(process.argv.slice(2));
+var resolutions = [320, 768, 1024];
+
+resolutions.forEach(function (resolution) {
+    var options = { screenSize: { width: resolution } };
+    var fileName = util.format('%s.%d.png', args.url, resolution);
+
+    webshot(args.url, fileName, options, function(err) {
+        if (err) { throw err; }
+        console.log('%dpx captured.', resolution);
+    });
+});
+                </code></pre>
+            </section>
+
+            <section>
+                <pre><code>
+node responsiveTester --url google.com
+                </code></pre>
+
+                <div>
+                    <img style="vertical-align: top;" src="google.com.1024.png" width="300" alt=""/>
+                    <img style="vertical-align: top;" src="google.com.768.png" width="300" alt=""/>
+                    <img style="vertical-align: top;" src="google.com.320.png" width="300" alt=""/>
+                </div>
+            </section>
+
+            <section>
+                <pre><code>
+node responsiveTester --url getbootstrap.com
+                </code></pre>
+
+                <div>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.1024.png" alt=""/>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.768.png" alt=""/>
+                    <img style="vertical-align: top;" width="300" src="getbootstrap.com.320.png" alt=""/>
+                </div>
+            </section>
+        </section>
+
+
+        <section>
+            <img src="arch.jpg" alt=""/>
+
+            <aside class="notes">
+                Libuv is a multi-platform support library with a focus on asynchronous I/O. It was primarily developed
+                for use by Node.js.
+                (Handles child process, socket, file system operations etc.)
+
+                V8 compiles JavaScript source code just-in-time to machine code instead of interpreting it in real time.
+                Also provides JS access to C++ objects and C++ access to JS objects.
+
+                Binding modules modules that add possibility to use C++ libs in Node.js
+                So some modules are done in C/C++.
+            </aside>
+        </section>
+
+        <section>
+            <section>
+                <h2>Part 3. Acynchrony</h2>
+                <p>What does it mean?</p>
+            </section>
+
+            <section>
+                <h2>Synchronous code:</h2>
+
+                <ol>
+                    <li>Sends request to DB</li>
+                    <li>Waits for response i.e. thread.sleep()</li>
+                    <li>Executes the code after DB call. (processes data)</li>
+                </ol>
+
+                <pre><code>
+var db = new DB();
+var data = db.getData(); //We sleep here say for 2 s.
+console.log(data);
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Asynchronous code:</h2>
+                <ol>
+                    <li>Sends request to DB</li>
+                    <li>Go on with other code</li>
+                    <li>Response from DB come in any time on a callback</li>
+                </ol>
+
+                <pre><code>
+var db = new DB();
+db.getData(function(err, data) {
+    console.log(data);
+});
+otherWork.do();//Immediately do this work.
+               //No need to wait for DB to respond.
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>This works asynchronously</h2>
+            <pre><code>
+var fs = require('fs');
+
+fs.readFile('myFile.txt', function(err, data) {
+    if (err) {
+        console.error(err);
+        throw err;
+    }
+
+    console.log("Async operation's been completed");
+    console.log(data);
+}
+
+console.log("Do some other work. Process other request etc.");
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>More asynchrony</h2>
+
+            <pre><code>
+var request = require('request');
+
+for (var i = 0; i < 100; i += 1) {
+    request.get("google.com", function(err, data) {
+        console.log("Async operaion has been completed");
+        console.log("We should process results");
+    });
+
+    console.log("Async operation in progress.");
+    console.log("We do other work.");
+}
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>How it's implemented?</h2>
+
+            <img src="eventLoop1.png" style="" alt=""/>
+
+            <aside class="notes">
+                Выполняет код, который ми пишем только один поток.
+                В отличие от Asp.Net MVC, где под каждый запрос создается поток.
+
+                Этот потом выполняет какую-то работу. Затем приходит к месту, где начинается
+                операция с OS. Останавливаестся и переходит к выолнению какой-то другой работы
+                из очереди выполнения. (Как в клиентском JavaScript)
+
+                Как только операция с OS завершена, фаерится событие и в очередь выполнения
+                поступает новая функция-колбек, в которую передается результат выполнения операции.
+            </aside>
+        </section>
+
+        <section>
+            <img src="eventLoop2.png" height="600"  alt=""/>
+
+            <aside class="notes">
+                Т.е. Node.js + OS сами разбираются как эффективным образом испльзовать потоки,
+                чтобы выполнить эти тяжелые задачи максимально эффективно.
+
+                Основной же процесс завершения их не ждет а за это время обрабатывает как можно
+                большее число запросов.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Gist</h2>
+
+            <p>We don't wait while file is being read.</p>
+            <p>We process requests.</p>
+
+            <p>We don't waste resources on creating processes.</p>
+
+            <img src="async.png" alt=""/>
+
+            <aside class="notes">
+                В этом и состоит основная фишка асинхронности.
+                Это сейчас очень модно. Tornado, async/await в C# и т д.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Performance growth</h2>
+            <img src="asyncGraph.png" alt=""/>
+
+            <p>According to the <a href="http://blog.stevensanderson.com/2010/01/25/measuring-the-performance-of-asynchronous-controllers/">blog post</a>.</p>
+        </section>
+
+        <section>
+            <h2>Specific</h2>
+
+            <p>Do not use Node.js for heavy computing.</p>
+
+            <img src="overload.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>Part 4. Callbacks</h2>
+
+            <p>Notice: Node style callback are called errbacks.</p>
+
+            <img src="joker-async.jpg" height="300" alt=""/>
+        </section>
+
+        <section>
+            <h2>Callbacks Rules <span no-uppercase red>!important;</span></h2>
+
+            <ul>
+                <li>First argument is error</li>
+                <li>Second argument is the result</li>
+                <li>Never pass both</li>
+                <li>Error should be insanceof Error (troothy)</li>
+            </ul>
+
+<pre><code>
+request.get('http://www.google.com', function (err, response) {
+    if (err) {
+        return console.error(err);
+    }
+
+    console.log('No errors, status is: ' + response.status);
+});
+</code></pre>
+
+        </section>
+
+        <section>
+            <h2>Callbacks (Errbacks) <span no-uppercase red>!important;</span></h2>
+
+            <ul>
+                <li>Must not be executed on the same tick of the event loop</li>
+                <li>Must be passed as a last argument</li>
+                <li>Returned value is ignored</li>
+                <li>Must not throw any errors/ pass resulting errors</li>
+                <li>Must never be called more than once</li>
+            </ul>
+        </section>
+
+        <section>
+            <img src="callbackPrincipals.png" alt=""/>
+
+            <aside class="notes">
+                https://www.youtube.com/watch?v=UsBng6yfiEQ
+                http://williamdurand.fr/2013/06/03/object-calisthenics/
+
+                Он должен быть выполнен на следующем тике. Обязательно.
+                Этого можно достичь с помощью process.NextTick
+                либо setInterval (??в чем разница).
+
+                Так как, если это, например стрим. То работает он по такому
+                принципу. Создали стрим, подписались на события, отреагировали на
+                события, обработали результат.
+
+                Если колбек не будет выполнен на следующем тике, то результат
+                вернется до того, как будут повешены обработчики событий.
+
+                Этому правилу желательно следовать всегда.
+            </aside>
+
+            <aside class="notes">
+                No throwing because we can't catch it.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Part 5. Globals</h2>
+        </section>
+
+        <section>
+            <h2>global objects in Node.js</h2>
+
+            <ul>
+                <li>global</li>
+                <li>module</li>
+                <li>module.exports & exports</li>
+                <li>process</li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <h2 no-uppercase>global</h2>
+
+                <p>True global object. If you set:</p>
+                <pre><code>
+global.testDirectoryPath = path.join(__dirname, "test");
+                </code></pre>
+
+                <p>It will be available anywhere. (From any other modules.)</p>
+            </section>
+
+            <section>
+                <h2><span no-uppercase>'window'</span> and <span no-uppercase>'global'</span> are different</h2>
+
+                <pre><code>
+var x = 3; //Doesn't go to global;
+y = 4; //Goes to global;
+global.z = 5; //Goes to global, evident;
+                </code></pre>
+
+                <p>Node's modules are wrapped in a closure, which is evaluated in the
+                    this-context of the exports object.</p>
+            </section>
+
+            <section>
+                <h2>Trend</h2>
+
+                <p>A lot of modern libs work both: on front and back end.</p>
+
+                <pre><code>
+if (global) {
+    //We are in node environment.
+}
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>What is <span no-uppercase>'this'</span>?</h2>
+
+            <p>
+                Node's modules are wrapped in a closure, which is evaluated in the
+                this-context of the exports object.
+            </p>
+
+            <p>So 'this' is exports.</p>
+
+            <pre><code>
+var assert = require('assert');
+assert.equal(this, module.exports);
+            </code></pre>
+
+            <aside class="notes">
+                So var x = 3; Won't create a property on global object.
+
+                Node's modules are wrapped in a closure, which is evaluated in the
+                this-context of the exports object.  So, if you do "var a = 3", then
+                it won't be added to this, global, or exports.  But, if you do "this.a
+                = 3" then it'll be added to "this" and "exports".
+
+                //so
+                var x = 3;
+                //goes to that context as a local variable
+
+                this.y = 3;
+                //goes to exports
+
+                z = 3;
+                //goest to global object
+            </aside>
+
+        </section>
+
+
+        <section>
+            <section>
+                <h2>exports & module.exports</h2>
+
+                <pre><code>
+//Think about exports as about a link:
+var exports = module.exports;
+                </code></pre>
+
+                <img src="exports.png" alt=""/>
+            </section>
+
+            <section>
+                <h2>Because of this:</h2>
+
+                <pre><code>
+exports.myFunction1 = function () {}; //OK
+exports = function () {}; //Doesn't change exported object.
+                          //Changes only link (similar to pointer)
+                          //Be careful.
+
+module.exports = function () {}; //OK
+module.exports = { myFunction: function () {} } //OK
+                </code></pre>
+
+                <p>So use module.exports.<br/> Because sometimes you'll need:</p>
+                <pre><code>
+var m = require('something')();
+                </code></pre>
+            </section>
+
+            <aside class="notes">
+                So if you do exports = { f: function() {} } it won't have an effect;
+                Because still module.exports will be returned.
+
+                You should use exports.f = function() {};
+
+                And at the same time module.exports = { f: function() {} } will have an effect.
+
+
+                Also you can:
+                module.exports = function(){};
+                ...
+                var m = require(module)();
+
+                And you cannot:
+                exports = function() {};
+                ...
+                var m = require(module)(); //Exception.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Module</h2>
+            <p>Information about current module.</p>
+            <p>Local for every module.</p>
+
+            <ul>
+                <li>module.parent</li>
+                <li>module.exports</li>
+                <li>etc</li>
+            </ul>
+
+            <img style="float: right;" src="modules.jpg" height="200" alt=""/>
+        </section>
+
+        <section>
+            <h2>Process</h2>
+
+            <p>Information about process</p>
+            <ul>
+                <li>process.env</li>
+                <li>Event: 'uncaughtException'</li>
+                <li>Signal Events</li>
+                <li>process.stdout</li>
+                <li>process.stderr</li>
+                <li>process.stdin</li>
+                <li>process.argv</li>
+            </ul>
+
+            <img style="float: right;" src="process.jpg" height="200" alt=""/>
+        </section>
+
+        <section>
+            <h2>Bonus. Hello world</h2>
+        </section>
+
+        <section>
+            <h2>HTTP Server</h2>
+
+            <pre><code>
+var http = require('http');
+
+var server = http.createServer(function (request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('Hello World');
+});
+
+server.listen(3000, function() {
+    console.log("Server has been started.");
+});
+            </code></pre>
+
+            <img src="helloWorld.png" alt=""/>
+        </section>
+
+        <section>
+            <h2>Challenges</h2>
+
+            <ol>
+                <li>Use jQuery on the back-end. Parse onliner.by page and console.log iPhone price.</li>
+                <li>
+                    Create cmd utility.
+                    It should find all files in '--folder' that contain '--find' in filename
+                    and replace this occurrence with '--replace' key value.
+                </li>
+                <li>
+                    Publish this package to npm.
+                </li>
+                <li>
+                    Rework the package to make it global.
+                </li>
+                <li>Create simple static server</li>
+            </ol>
+        </section>
+    
+    <section>
+        <h2>Any Questions?</h2>
+
+        <img src="thanks.jpg" alt=""/>
+    </section>
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            { src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            { src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src: 'plugin/zoom-js/zoom.js', async: true },
+            { src: 'plugin/notes/notes.js', async: true }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
