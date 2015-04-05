@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style>
+            *[no-border] {
+                border: none !important;
+            }
+
+            *[no-uppercase] {
+                text-transform: none !important;
+            }
+
+            * [red] {
+                color: rgba(255, 42, 22, 0.84);
+            }
+
+            h1, h2, h3, h4 {
+                color: #80bd01 !important;
+            }
+
+            * [green] {
+                color: #80bd01 !important;
+            }
+
+            * [white] {
+                color: white !important;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+    <section>
+        <h1>Express.js</h1>
+        <h2 white>Node.js superstar</h2>
+    </section>
+
+    <section>
+        <img src="expressjsWebsite.png" alt=""/>
+        <p green>18227 stars at gitHub</p>
+    </section>
+
+    <section>
+        <h2>Express features</h2>
+
+        <ul>
+            <li>Routing + verbs: GET, POST etc</li>
+            <li>MVC, rendering HTML</li>
+            <li>Sessions/Cookies</li>
+            <li>Url & Body params</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Express Generator</h2>
+
+    <pre><code>
+npm install express-generator -g
+    </code></pre>
+
+        <img src="generatorFolderStructure.png" alt=""/>
+    </section>
+
+    <section>
+        <h2>Hello world</h2>
+
+        <pre><code>
+var express = require('express');
+var app = express();
+
+app.get('/', function (req, res) {
+    res.send('Hello World!');
+});
+
+var server = app.listen(3000, function () {
+
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('Example app listening at http://%s:%s', host, port);
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>To build endpoint we need:</h2>
+        <img src="routingItems.png" alt=""/>
+    </section>
+
+    <section>
+        <h2>Verbs</h2>
+
+        <pre><code>
+app.get('/', function (req, res) {
+    res.send('Hello World!');
+});
+
+app.post('/', function (req, res) {
+    res.send('POST request to the homepage');
+});
+        </code></pre>
+
+        <p>Methods: get, post, put, head, delete, options, trace, copy, lock, mkcol, move, purge, propfind, proppatch, unlock, report, mkactivity, checkout, merge, m-search, notify, subscribe, unsubscribe, patch, search, and connect.</p>
+    </section>
+
+    <section>
+        <h2>Handle all verbs:</h2>
+
+        <pre><code>
+app.all('/secret', function (req, res, next) {
+    console.log('Accessing the secret section ...');
+    next(); // pass control to the next handler
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Routes</h2>
+        <h2>Matches URL literally & Supports parameters</h2>
+        <a href="http://forbeslindesay.github.io/express-route-tester/?_ga=1.139710907.927115007.1428226553">Route tester</a>
+    </section>
+
+    <section>
+        <h2>Strings with regex elements</h2>
+        <pre><code>
+// will match /abe and /abcde
+app.get('/ab(cd)?e', function(req, res) {
+    res.send('ab(cd)?e');
+});
+        </code></pre>
+
+        <p>You can use ?, +, *, and (). (-) and the dot (.) are interpreted literally.</p>
+    </section>
+
+    <section>
+        <h2>Regex</h2>
+
+        <pre><code>
+// will match butterfly, dragonfly; but not butterflyman, dragonfly man
+app.get(/.*fly$/, function(req, res) {
+    res.send('/.*fly$/');
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Params</h2>
+        <!--TODO: Params-->
+    </section>
+
+    <section>
+        <h2>Handler</h2>
+
+        <!--TODO: Can be a function-->
+    </section>
+
+    <section>
+        <!--TODO: Can be an array-->
+    </section>
+
+    <section>
+        <!--TODO: Can be a combination-->
+        <!--TODO: Investigate next() behavior-->
+        <!--Как оно себя ведет если не вызвать next, как определяет, что нужно отдать респонс-->
+    </section>
+
+    <section>
+        <h2>Request</h2>
+
+        <ul>
+            <li>req.params</li>
+            <li>req.query</li>
+            <li>req.body</li>
+            <li>req.cookies</li>
+            <li>req.get</li>
+
+            <!--TODO: Example where we use it all.-->
+        </ul>
+
+    </section>
+
+    <section>
+        <section>
+            <h2>Response</h2>
+
+            <ul>
+                <li>res.status()	Sets HTTP Status-code</li>
+                <li>res.send()	Send a response of various types.</li>
+                <li>res.json()	Send a JSON response.</li>
+                <li>res.jsonp()	Send a JSON response with JSONP support.</li>
+                <li>res.end()	End the response process.</li>
+                <li>res.redirect()	Redirect a request.</li>
+                <li>res.sendStatus()	Set the response status code and send its string representation as the response body.</li>
+                <li>res.render()	Render a view template.</li>
+            </ul>
+        </section>
+
+        <section>
+            <!--TODO: Отдадим JSON-->
+            <!--TODO: Отдадим JSONP-->
+            <!--TODO: Отдадим Строку-->
+            <!--TODO: Отдадим Код итд-->
+        </section>
+
+    </section>
+
+    <section>
+        <h2>Defining the endpoint at once</h2>
+
+        <pre><code>
+app.route('/book')
+    .get(function(req, res) {
+        res.send('Get a random book');
+    })
+    .post(function(req, res) {
+        res.send('Add a book');
+    })
+    .put(function(req, res) {
+        res.send('Update the book');
+    });
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>View Engines and <span no-uppercase>.render</span></h2>
+    </section>
+    
+    <section>
+        <h2>To use View Engines you need</h2>
+
+        <ul>
+            <li>views, the directory where the template files are located. Eg: app.set('views', './views')</li>
+            <li>view engine, the template engine to use. Eg: app.set('view engine', 'jade')</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>There are loads of view engines</h2>
+
+        <ul>
+            <li>JADE</li>
+            <li>Handlebars</li>
+            <li>Razor</li>
+        </ul>
+
+        http://garann.github.io/template-chooser/
+        https://www.npmjs.com/package/consolidate
+
+        <!--TODO: Посоветовать какой-то энджин-->
+        <!--TODO: Что показывать по JADE?-->
+    </section>
+
+    <section>
+        <pre><code>
+// pass a local variable to the view
+res.render('user', { name: 'Tobi' }, function(err, html) {
+    // ...
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Middleware</h2>
+
+        <p>Bring true power to Express.js</p>
+    </section>
+
+    <section>
+        <h2>Signature</h2>
+
+        app.use(function(req, res, next) {});
+
+        <p>Middleware takes req, res and tries to process it.</p>
+        <p>If it can't it calls next()</p>
+        <p>If error happens it calls next(err)</p>
+    </section>
+
+    <section>
+        <img src="middleware2.jpg" alt=""/>
+        <p>It goes like a pipeline.</p>
+        <p>Similarly to Asp.Net MVC Filters</p>
+    </section>
+
+    <section>
+        <img src="middleware.jpg" alt=""/>
+        <p>Express app is a queue of middlewares.</p>
+    </section>
+
+    <section>
+        <h2>Middleware can:</h2>
+
+        <ul>
+            <li>Execute any code.</li>
+            <li>Make changes to the request and the response objects.</li>
+            <li>End the request-response cycle.</li>
+            <li>Call the next middleware in the stack.</li>
+        </ul>
+    </section>
+
+
+    <section>
+        <h2>Middleware types</h2>
+
+        <ul>
+            <li>Application-level middleware</li>
+            <li>Router-level middleware</li>
+            <li>Error-handling middleware</li>
+            <li>Built-in middleware (static)</li>
+            <li>Third-party middleware</li>
+        </ul>
+    </section>
+
+    <section>
+        <!--TODO: Схема, как работают мидлверы. Полная.-->
+    </section>
+
+    <section>
+        <h2>Popular & Needed Midleware</h2>
+
+        http://expressjs.com/resources/middleware.html
+        <ul>
+            <li>Body Parser</li>
+            <li>Cookie Parser</li>
+            <li>express-debug</li>
+            <li>express-session</li>
+            <li>Morgan</li>
+            <li>Favicon</li>
+        </ul>
+
+    </section>
+
+    <section>
+        <!--TODO: Пример, капиталайзер урлов либо наоборот. В качестве своего мидл вера.-->
+        https://github.com/jamiesteven/express-uncapitalize?_ga=1.40163882.927115007.1428226553
+    </section>
+
+</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
