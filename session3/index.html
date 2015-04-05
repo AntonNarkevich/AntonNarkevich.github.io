@@ -57,6 +57,10 @@
             * [white] {
                 color: white !important;
             }
+
+            * [block] {
+                display: block !important;
+            }
         </style>
 	</head>
 
@@ -73,29 +77,45 @@
     </section>
 
     <section>
-        <img src="expressjsWebsite.png" alt=""/>
-        <p green>18227 stars at gitHub</p>
+        <h2>Contents</h2>
+
+        <ol>
+            <li>asdf</li>
+        </ol>
     </section>
 
     <section>
-        <h2>Express features</h2>
+        <h2>What's it</h2>
+
+        <p style="text-align: left">Extra popular framework for creating web apps (APIs, Websites) really easy.</p>
+
+        <img src="logo.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>It brings</h2>
 
         <ul>
-            <li>Routing + verbs: GET, POST etc</li>
             <li>MVC, rendering HTML</li>
+            <li>Routing + verbs: GET, POST etc</li>
             <li>Sessions/Cookies</li>
             <li>Url & Body params</li>
+            <li>Static server from the box</li>
+            <li>Authentication and much else</li>
         </ul>
     </section>
 
     <section>
-        <h2>Express Generator</h2>
+        <img src="expressjsWebsite.png" alt=""/>
+        <p><span green>18227</span> stars at gitHub</p>
+    </section>
 
-    <pre><code>
-npm install express-generator -g
-    </code></pre>
+    <section>
+        <h2>Install it</h2>
 
-        <img src="generatorFolderStructure.png" alt=""/>
+        <pre><code>
+npm install express --save
+        </code></pre>
     </section>
 
     <section>
@@ -103,29 +123,36 @@ npm install express-generator -g
 
         <pre><code>
 var express = require('express');
-var app = express();
+var app = express(); //similar to http.createServer
 
+//Routes. Our logic.
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 
-var server = app.listen(3000, function () {
-
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Example app listening at http://%s:%s', host, port);
+app.listen(3000, function () {
+    console.log('Example app listening at localhost:3000');
 });
         </code></pre>
+
+        <p>The simplest web app (API or whatever).</p>
     </section>
 
     <section>
-        <h2>To build endpoint we need:</h2>
-        <img src="routingItems.png" alt=""/>
+
+        <h2>Creating HTTP Endpoint</h2>
+
+        <img style="display: block; margin: 0 auto;" src="routingItems.png" alt=""/>
+
+        <ol style="margin-top: 20px;">
+            <li>Http Method</li>
+            <li>Route (url)</li>
+            <li>Handler (what to do)</li>
+        </ol>
     </section>
 
     <section>
-        <h2>Verbs</h2>
+        <h2>HTTP Method === app.method</h2>
 
         <pre><code>
 app.get('/', function (req, res) {
@@ -141,7 +168,7 @@ app.post('/', function (req, res) {
     </section>
 
     <section>
-        <h2>Handle all verbs:</h2>
+        <h2>Handle all methods</h2>
 
         <pre><code>
 app.all('/secret', function (req, res, next) {
@@ -152,44 +179,113 @@ app.all('/secret', function (req, res, next) {
     </section>
 
     <section>
-        <h2>Routes</h2>
-        <h2>Matches URL literally & Supports parameters</h2>
-        <a href="http://forbeslindesay.github.io/express-route-tester/?_ga=1.139710907.927115007.1428226553">Route tester</a>
-    </section>
+        <section>
+            <h2>Routing</h2>
 
-    <section>
-        <h2>Strings with regex elements</h2>
-        <pre><code>
-// will match /abe and /abcde
-app.get('/ab(cd)?e', function(req, res) {
-    res.send('ab(cd)?e');
+            <p>Ways to define url for the endpoint.</p>
+            <p>+ Express supports route parameters.</p>
+        </section>
+
+        <section>
+            <h2>Direct match</h2>
+
+            <pre><code>
+// Matches /about
+app.get('/about', function (req, res) {
+    res.send('about');
 });
-        </code></pre>
 
-        <p>You can use ?, +, *, and (). (-) and the dot (.) are interpreted literally.</p>
-    </section>
+// Matches /string.here
+app.get('/string.here', function (req, res) {
+    res.send('random.text');
+});
+            </code></pre>
 
-    <section>
-        <h2>Regex</h2>
+            <a href="http://forbeslindesay.github.io/express-route-tester/?_ga=1.139710907.927115007.1428226553">Route tester</a>
+        </section>
 
-        <pre><code>
+        <section>
+            <h2>Simplified regex</h2>
+            <pre><code>
+// Matches /simpleString and /notSimpleString
+app.get('/(not)?simpleString', function (req, res) {
+});
+            </code></pre>
+
+            <p>You can use ?, +, *, and ().</p>
+            <p>Minus (-) and the dot (.) are interpreted literally.</p>
+        </section>
+
+        <section>
+            <h2>Hardcore Regex</h2>
+
+            <pre><code>
 // will match butterfly, dragonfly; but not butterflyman, dragonfly man
 app.get(/.*fly$/, function(req, res) {
     res.send('/.*fly$/');
 });
-        </code></pre>
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Parameters</h2>
+            <pre><code>
+app.put('/:paramA/:paramB', function (req, res) {
+    console.log(req.params.paramA);
+    console.log(req.params.paramB);
+});
+            </code></pre>
+        </section>
     </section>
 
     <section>
-        <h2>Params</h2>
-        <!--TODO: Params-->
+        <section>
+            <h2>Handler</h2>
+
+            <p>What to do with request. What to respond.</p>
+
+            <pre><code>
+app.get('/', function (req, res, next) {
+    res.send('Hello World!');
+});
+            </code></pre>
+
+            <p>Takes 3 arguments.</p>
+        </section>
+
+        <section>
+            <h2>Request Object</h2>
+
+            <ul>
+                <li><strong>req.params</strong> - route params (:username)</li>
+                <li><strong>req.query </strong>- /index?param=3</li>
+                <li><strong>req.body </strong>- POST request body</li>
+                <li><strong>req.cookies</strong></li>
+                <li><strong>req.get('Authorization')</strong>- HTTP Headers</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Response</h2>
+
+            <ul>
+                <li><strong>res.status(200)</strong> - Sets Status-code</li>
+                <li><strong>res.send("")</strong> - Send a response of various types.</li>
+                <li><strong>res.json({})</strong> - Send a JSON response.</li>
+                <li><strong>res.end()</strong> - End the response process.</li>
+                <li><strong>res.redirect("/home")</strong></li>
+                <li><strong>res.render("view")</strong> - Render a view template.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Let us use it all</h2>
+            <p>Some code <a href="">here</a>.</p>
+        </section>
     </section>
 
-    <section>
-        <h2>Handler</h2>
 
-        <!--TODO: Can be a function-->
-    </section>
+
 
     <section>
         <!--TODO: Can be an array-->
@@ -202,34 +298,13 @@ app.get(/.*fly$/, function(req, res) {
     </section>
 
     <section>
-        <h2>Request</h2>
 
-        <ul>
-            <li>req.params</li>
-            <li>req.query</li>
-            <li>req.body</li>
-            <li>req.cookies</li>
-            <li>req.get</li>
-
-            <!--TODO: Example where we use it all.-->
-        </ul>
 
     </section>
 
     <section>
         <section>
-            <h2>Response</h2>
 
-            <ul>
-                <li>res.status()	Sets HTTP Status-code</li>
-                <li>res.send()	Send a response of various types.</li>
-                <li>res.json()	Send a JSON response.</li>
-                <li>res.jsonp()	Send a JSON response with JSONP support.</li>
-                <li>res.end()	End the response process.</li>
-                <li>res.redirect()	Redirect a request.</li>
-                <li>res.sendStatus()	Set the response status code and send its string representation as the response body.</li>
-                <li>res.render()	Render a view template.</li>
-            </ul>
         </section>
 
         <section>
@@ -239,6 +314,16 @@ app.get(/.*fly$/, function(req, res) {
             <!--TODO: Отдадим Код итд-->
         </section>
 
+    </section>
+
+    <section>
+        <h2>Express Generator</h2>
+
+    <pre><code>
+npm install express-generator -g
+    </code></pre>
+
+        <img src="generatorFolderStructure.png" alt=""/>
     </section>
 
     <section>
@@ -300,6 +385,9 @@ res.render('user', { name: 'Tobi' }, function(err, html) {
         <h2>Middleware</h2>
 
         <p>Bring true power to Express.js</p>
+
+        <p>If handler cannot finish request processing it calls next().</p>
+
     </section>
 
     <section>
