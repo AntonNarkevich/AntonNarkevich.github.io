@@ -201,7 +201,7 @@ app.get('/string.here', function (req, res) {
 });
             </code></pre>
 
-            <a href="http://forbeslindesay.github.io/express-route-tester/?_ga=1.139710907.927115007.1428226553">Route tester</a>
+            <a href="http://forbeslindesay.github.io/express-route-tester/?_ga=1.139710907.927115007.1428226553" target="_blank">Route tester</a>
         </section>
 
         <section>
@@ -283,9 +283,42 @@ app.get('/', function (req, res, next) {
             <p>Some code <a href="">here</a>.</p>
         </section>
     </section>
+    
+    <section>
+        <section>
+            <h2>next()</h2>
+        </section>
 
+        <section>
+            <h2>Middleware pattern</h2>
 
+            <p>Pipeline of functions.</p>
+            <p>That try to process request and modify req and res.</p>
+            <p>If the function completes request, processing stops.</p>
+            <p>next() is called - req and res go to the next middleware.</p>
+        </section>
 
+        <section>
+        <img src="middlewarepattern.png" height="600" alt=""/>
+        </section>
+
+        <section>
+            <h2>Multy-handlers</h2>
+            <pre><code>
+app.get('/example/b', function (req, res, next) {
+    console.log('req and res will be sent by the next function');
+    next();
+}, function (req, res, next) {
+    console.log('We can chain any number of handlers');
+    next();
+}, function (req, res) {
+    res.send('Hello from B!');
+});
+            </code></pre>
+
+            <p>Note: changes to req, res are saved.</p>
+        </section>
+    </section>
 
     <section>
         <!--TODO: Can be an array-->
