@@ -321,35 +321,6 @@ app.get('/example/b', function (req, res, next) {
     </section>
 
     <section>
-        <!--TODO: Can be an array-->
-    </section>
-
-    <section>
-        <!--TODO: Can be a combination-->
-        <!--TODO: Investigate next() behavior-->
-        <!--Как оно себя ведет если не вызвать next, как определяет, что нужно отдать респонс-->
-    </section>
-
-    <section>
-
-
-    </section>
-
-    <section>
-        <section>
-
-        </section>
-
-        <section>
-            <!--TODO: Отдадим JSON-->
-            <!--TODO: Отдадим JSONP-->
-            <!--TODO: Отдадим Строку-->
-            <!--TODO: Отдадим Код итд-->
-        </section>
-
-    </section>
-
-    <section>
         <h2>Express Generator</h2>
 
     <pre><code>
@@ -378,46 +349,107 @@ app.route('/book')
 
     <section>
         <h2>View Engines and <span no-uppercase>.render</span></h2>
+
+        <p>The way to render HTML in Express.js</p>
+        <p>Model + View => HTML</p>
     </section>
-    
+
     <section>
-        <h2>To use View Engines you need</h2>
+        <h2>Most of engines have</h2>
 
         <ul>
-            <li>views, the directory where the template files are located. Eg: app.set('views', './views')</li>
-            <li>view engine, the template engine to use. Eg: app.set('view engine', 'jade')</li>
+            <li>If conditions - {{if auth}}Hi!{{endif}}</li>
+            <li>Foreach loops - {{foreach p in persons}}</li>
+            <li>Data binding - &lt;span&gt;{{name}}&lt;/span&gt;</li>
+            <li>Master pages (layouts)</li>
+            <li>etc</li>
         </ul>
     </section>
+    
 
     <section>
-        <h2>There are loads of view engines</h2>
+        <h2>There are +9000 engines</h2>
 
         <ul>
             <li>JADE</li>
+            <li>Swig</li>
             <li>Handlebars</li>
             <li>Razor</li>
         </ul>
 
-        http://garann.github.io/template-chooser/
-        https://www.npmjs.com/package/consolidate
-
-        <!--TODO: Посоветовать какой-то энджин-->
-        <!--TODO: Что показывать по JADE?-->
+        <a style="margin-top:20px;" href="http://garann.github.io/template-chooser/" block>Template chooser</a>
     </section>
 
     <section>
+        <h2>Setting up</h2>
+
+        <p>View directory</p>
+            <pre><code>
+app.set('views', './views')
+            </code></pre>
+
+        <p>View engine</p>
+            <pre><code>
+app.set('view engine', 'jade')
+            </code></pre>
+    </section>
+
+    <section>
+        <h2>Rendering</h2>
+
         <pre><code>
-// pass a local variable to the view
-res.render('user', { name: 'Tobi' }, function(err, html) {
-    // ...
+app.get('/home', function () {
+    var model = {
+        name: vasia
+    };
+    // passing data to a view (say from db)
+    res.render('home', model);
 });
         </code></pre>
     </section>
 
     <section>
+        <h2>JADE</h2>
+
+        <img src="hipster-glasses.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>Gist</h2>
+
+        <img src="jade-example.png" alt=""/>
+
+        <ul>
+            <li>No closing tags</li>
+            <li>Tabs === composition</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>+</h2>
+        <ul style="width: 80%">
+            <li>The most popular (Stack is really overflowed)</li>
+            <li>Full feature set</li>
+            <li>Familiar for ruby developers</li>
+        </ul>
+
+        <h2>-</h2>
+        <ul style="width: 80%">
+            <li>Weird syntax (IMHO unhandy)</li>
+            <li>Difficult to learn</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>True view engine is ...</h2>
+
+        <!--TODO: Describe true view engine-->
+    </section>
+
+    <section>
         <h2>Middleware</h2>
 
-        <p>Bring true power to Express.js</p>
+        <p>Bring power to Express.js</p>
 
         <p>If handler cannot finish request processing it calls next().</p>
 
@@ -426,11 +458,15 @@ res.render('user', { name: 'Tobi' }, function(err, html) {
     <section>
         <h2>Signature</h2>
 
-        app.use(function(req, res, next) {});
+        <pre><code>
+app.use(function(req, res, next) {});
+        </code></pre>
 
-        <p>Middleware takes req, res and tries to process it.</p>
-        <p>If it can't it calls next()</p>
-        <p>If error happens it calls next(err)</p>
+        <ul>
+            <li>Middleware takes req, res and tries to process it.</li>
+            <li>If it can't it calls next()</li>
+            <li>If error happens it calls next(err)</li>
+        </ul>
     </section>
 
     <section>
@@ -487,10 +523,7 @@ res.render('user', { name: 'Tobi' }, function(err, html) {
 
     </section>
 
-    <section>
-        <!--TODO: Пример, капиталайзер урлов либо наоборот. В качестве своего мидл вера.-->
-        https://github.com/jamiesteven/express-uncapitalize?_ga=1.40163882.927115007.1428226553
-    </section>
+    <!--TODO: Покажем пример, как настроить эти все мидл веры.-->
 
 </div>
 
