@@ -80,8 +80,15 @@
         <h2>Contents</h2>
 
         <ol>
-            <li>asdf</li>
+            <li>Part 1. Introduction</li>
+            <li>Part 2. Setting up endpoints</li>
+            <li>Part 3. View engines</li>
+            <li>Part 4: Middleware toolkit</li>
         </ol>
+    </section>
+
+    <section>
+        <h2>Part 1. Introduction</h2>
     </section>
 
     <section>
@@ -90,24 +97,44 @@
         <p style="text-align: left">Extra popular framework for creating web apps (APIs, Websites) really easy.</p>
 
         <img src="logo.jpg" alt=""/>
+
+        <p>A part of the MEAN stack.</p>
+    </section>
+
+    <section>
+        <img src="expressjsWebsite.png" alt=""/>
+        <p><span green>18227</span> stars at gitHub</p>
     </section>
 
     <section>
         <h2>It brings</h2>
 
         <ul>
-            <li>MVC, rendering HTML</li>
+            <li>data + template => html, almost MVC</li>
             <li>Routing + verbs: GET, POST etc</li>
             <li>Sessions/Cookies</li>
             <li>Url & Body params</li>
             <li>Static server from the box</li>
-            <li>Authentication and much else</li>
+            <li>Authentication etc</li>
+        </ul>
+
+        <p style="display: block; margin-top: 30px;"><span green>Note:</span> Most features are installed as middleware.</p>
+    </section>
+
+    <section>
+        <h2>Alternatives</h2>
+
+        <ul>
+            <li>http.createServer</li>
+            <li>Connect</li>
+            <li>Koa</li>
+            <li>Restify</li>
+            <li>etc</li>
         </ul>
     </section>
 
     <section>
-        <img src="expressjsWebsite.png" alt=""/>
-        <p><span green>18227</span> stars at gitHub</p>
+        <h2>Part 2. Setting up endpoints</h2>
     </section>
 
     <section>
@@ -127,6 +154,7 @@ var app = express(); //similar to http.createServer
 
 //Routes. Our logic.
 app.get('/', function (req, res) {
+    //req and res are extended objects from http.createServer
     res.send('Hello World!');
 });
 
@@ -220,7 +248,8 @@ app.get('/(not)?simpleString', function (req, res) {
             <h2>Hardcore Regex</h2>
 
             <pre><code>
-// will match butterfly, dragonfly; but not butterflyman, dragonfly man
+// will match butterfly, dragonfly;
+//but not butterflyman, dragonfly man
 app.get(/.*fly$/, function(req, res) {
     res.send('/.*fly$/');
 });
@@ -235,6 +264,30 @@ app.put('/:paramA/:paramB', function (req, res) {
     console.log(req.params.paramB);
 });
             </code></pre>
+
+            <p>Used for semantic URL: ids, aliases e.g. onliner.by/iphone.</p>
+        </section>
+
+        <section>
+            <h2>Query parameters</h2>
+
+            <pre><code>
+// GET /search?q=tobi+ferret
+req.query.q
+// => "tobi ferret"
+
+// GET /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
+req.query.order
+// => "desc"
+
+req.query.shoe.color
+// => "blue"
+
+req.query.shoe.type
+// => "converse"
+            </code></pre>
+
+            <p>If there is no query string, it is the empty object, {}.</p>
         </section>
     </section>
 
@@ -277,11 +330,6 @@ app.get('/', function (req, res, next) {
                 <li><strong>res.render("view")</strong> - Render a view template.</li>
             </ul>
         </section>
-
-        <section>
-            <h2>Let us use it all</h2>
-            <p>Some code <a href="">here</a>.</p>
-        </section>
     </section>
     
     <section>
@@ -304,6 +352,7 @@ app.get('/', function (req, res, next) {
 
         <section>
             <h2>Multy-handlers</h2>
+
             <pre><code>
 app.get('/example/b', function (req, res, next) {
     console.log('req and res will be sent by the next function');
@@ -318,6 +367,14 @@ app.get('/example/b', function (req, res, next) {
 
             <p>Note: changes to req, res are saved.</p>
         </section>
+
+    </section>
+
+    <section>
+        <h2>Let us use it all</h2>
+        <p>Some code <a href="">here</a>.</p>
+
+        <!--TODO: Example. Getting all params from req, timer, logger, response with json.-->
     </section>
 
     <section>
@@ -363,10 +420,14 @@ app.use('/birds', birds);
     </section>
 
     <section>
+        <h2>Part 3. View engines</h2>
+    </section>
+
+    <section>
         <h2>View Engines and <span no-uppercase>.render</span></h2>
 
         <p>The way to render HTML in Express.js</p>
-        <p>Model + View => HTML</p>
+        <p>Data + View => HTML</p>
     </section>
 
     <section>
@@ -381,20 +442,6 @@ app.use('/birds', birds);
         </ul>
     </section>
     
-
-    <section>
-        <h2>There are +9000 engines</h2>
-
-        <ul>
-            <li>JADE</li>
-            <li>Swig</li>
-            <li>Handlebars</li>
-            <li>Razor</li>
-        </ul>
-
-        <a style="margin-top:20px;" href="http://garann.github.io/template-chooser/" block>Template chooser</a>
-    </section>
-
     <section>
         <h2>Setting up</h2>
 
@@ -415,7 +462,7 @@ app.set('view engine', 'jade')
         <pre><code>
 app.get('/home', function () {
     var model = {
-        name: vasia
+        name: 'vasia'
     };
     // passing data to a view (say from db)
     res.render('home', model);
@@ -424,58 +471,91 @@ app.get('/home', function () {
     </section>
 
     <section>
-        <h2>JADE</h2>
-
-        <img src="hipster-glasses.jpg" alt=""/>
-    </section>
-
-    <section>
-        <h2>Gist</h2>
-
-        <img src="jade-example.png" alt=""/>
+        <h2>There are +9000 engines</h2>
 
         <ul>
-            <li>No closing tags</li>
-            <li>Tabs === composition</li>
+            <li>JADE</li>
+            <li>Swig</li>
+            <li>Handlebars</li>
+            <li>Razor</li>
         </ul>
+
+        <a style="margin-top:20px;" href="http://garann.github.io/template-chooser/" block>Template chooser</a>
     </section>
 
     <section>
-        <h2>+</h2>
-        <ul style="width: 80%">
-            <li>The most popular (Stack is really overflowed)</li>
-            <li>Full feature set</li>
-            <li>Familiar for ruby developers</li>
-        </ul>
+        <section>
+            <h2>JADE</h2>
 
-        <h2>-</h2>
-        <ul style="width: 80%">
-            <li>Weird syntax (IMHO unhandy)</li>
-            <li>Difficult to learn</li>
-        </ul>
+            <img src="hipster-glasses.jpg" alt=""/>
+        </section>
+
+        <section>
+            <h2>Gist</h2>
+
+            <img src="jade-example.png" alt=""/>
+
+            <ul>
+                <li>No closing tags</li>
+                <li>Tabs === composition</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>+</h2>
+            <ul style="width: 80%">
+                <li>The most popular (Stack is really overflowed)</li>
+                <li>Full feature set</li>
+                <li>Familiar for ruby developers</li>
+            </ul>
+
+            <h2>-</h2>
+            <ul style="width: 80%">
+                <li>Weird syntax (IMHO unhandy)</li>
+                <li>Difficult to learn</li>
+            </ul>
+        </section>
     </section>
 
     <section>
-        <h2>True view engine is ...</h2>
+        <h2>True view engine is ... SWIG</h2>
 
-        <!--TODO: Describe true view engine-->
+        <img src="swigexample.png" alt=""/>
+
     </section>
 
     <section>
-        <h2>Express Generator</h2>
+        <h2>Let us generate app & use swig</h2>
 
     <pre><code>
 npm install express-generator -g
+cd projFolder
+express
     </code></pre>
 
         <img src="generatorFolderStructure.png" alt=""/>
     </section>
 
     <section>
-        <h2>Middleware</h2>
+        <p>Example <a href="">here</a>.</p>
 
-        <p>We definitely need more tools</p>
+        <p>Disregard app.use() for now.</p>
+        <!--TODO: Example of swig: if, foreach, layout, partial-->
+        <!--TODO: Also includes express 4 router object-->
     </section>
+
+    <section>
+        <h2>Part 4: Middleware toolkit</h2>
+    </section>
+
+    <section>
+        <p>app.use(); app.use(); collects middleware into a queue.</p>
+
+        <img src="middlewarepattern.png" height="450" alt=""/>
+
+        <p><span green>Note: </span> middleware order matters.</p>
+    </section>
+
 
     <section>
         <h2>Understanding</h2>
@@ -488,13 +568,6 @@ npm install express-generator -g
     </section>
 
     <section>
-        <p>So by calling app.use(); app.use(); app.use();</p>
-        <p>We are collecting middleware into a queue.</p>
-
-        <img src="middlewarepattern.png" height="500" alt=""/>
-    </section>
-
-    <section>
         <h2>Signature</h2>
 
         <pre><code>
@@ -502,20 +575,11 @@ app.use(function(req, res, next) {});
         </code></pre>
 
         <ul>
-            <li>Middleware takes req, res and tries to process it.</li>
-            <li>If it can't it calls next()</li>
-            <li>If error happens it calls next(err)</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>Middleware can:</h2>
-
-        <ul>
-            <li>Execute any code.</li>
-            <li>Make changes to the request and the response objects.</li>
-            <li>End response processing.</li>
-            <li>Call the next middleware.</li>
+            <li>Tries to process request</li>
+            <li>Or modifies req and res</li>
+            <li>If processing is not finished - calls next() middleware</li>
+            <li>If next() is not called - processing is finished</li>
+            <li>If error happens - calls next(err)</li>
         </ul>
     </section>
 
@@ -622,6 +686,18 @@ app.use(function(err, req, res, next) {
         </code></pre>
 
         <p>Should be defined last.</p>
+    </section>
+
+    <section>
+        <p>Let us wire <a href="">it all</a> together.</p>
+
+        <!--TODO: Пример с кучей мидлверов. Также с зачитыванием файла. Плюс хендлингом ошибки.-->
+    </section>
+    
+    <section>
+        <h2>Any questions?</h2>
+
+        <img src="thx.jpg" alt="" height="500"/>
     </section>
 </div>
 
