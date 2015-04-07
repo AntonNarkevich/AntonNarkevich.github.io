@@ -321,17 +321,7 @@ app.get('/example/b', function (req, res, next) {
     </section>
 
     <section>
-        <h2>Express Generator</h2>
-
-    <pre><code>
-npm install express-generator -g
-    </code></pre>
-
-        <img src="generatorFolderStructure.png" alt=""/>
-    </section>
-
-    <section>
-        <h2>Defining the endpoint at once</h2>
+        <h2>Express 4 sugar</h2>
 
         <pre><code>
 app.route('/book')
@@ -344,6 +334,31 @@ app.route('/book')
     .put(function(req, res) {
         res.send('Update the book');
     });
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Super approach</h2>
+
+        <pre><code>
+var express = require('express');
+var router = express.Router();
+
+// define the home page route
+router.get('/', function(req, res) {
+    res.send('Birds home page');
+});
+// define the about route
+router.get('/about', function(req, res) {
+    res.send('About birds');
+});
+
+module.exports = router;
+        </code></pre>
+
+        <pre><code>
+var birds = require('./birds');
+app.use('/birds', birds);
         </code></pre>
     </section>
 
@@ -447,12 +462,36 @@ app.get('/home', function () {
     </section>
 
     <section>
+        <h2>Express Generator</h2>
+
+    <pre><code>
+npm install express-generator -g
+    </code></pre>
+
+        <img src="generatorFolderStructure.png" alt=""/>
+    </section>
+
+    <section>
         <h2>Middleware</h2>
 
-        <p>Bring power to Express.js</p>
+        <p>We definitely need more tools</p>
+    </section>
 
-        <p>If handler cannot finish request processing it calls next().</p>
+    <section>
+        <h2>Understanding</h2>
 
+        <p>Express app is a queue of middlewares.</p>
+
+        <img src="middleware2.jpg" alt=""/>
+
+        <p>In fact our routes are middlewares.</p>
+    </section>
+
+    <section>
+        <p>So by calling app.use(); app.use(); app.use();</p>
+        <p>We are collecting middleware into a queue.</p>
+
+        <img src="middlewarepattern.png" height="500" alt=""/>
     </section>
 
     <section>
@@ -470,61 +509,120 @@ app.use(function(req, res, next) {});
     </section>
 
     <section>
-        <img src="middleware2.jpg" alt=""/>
-        <p>It goes like a pipeline.</p>
-        <p>Similarly to Asp.Net MVC Filters</p>
-    </section>
-
-    <section>
-        <img src="middleware.jpg" alt=""/>
-        <p>Express app is a queue of middlewares.</p>
-    </section>
-
-    <section>
         <h2>Middleware can:</h2>
 
         <ul>
             <li>Execute any code.</li>
             <li>Make changes to the request and the response objects.</li>
-            <li>End the request-response cycle.</li>
-            <li>Call the next middleware in the stack.</li>
+            <li>End response processing.</li>
+            <li>Call the next middleware.</li>
         </ul>
     </section>
 
-
     <section>
-        <h2>Middleware types</h2>
+        <h2>Middleware is used for</h2>
 
         <ul>
-            <li>Application-level middleware</li>
-            <li>Router-level middleware</li>
-            <li>Error-handling middleware</li>
-            <li>Built-in middleware (static)</li>
-            <li>Third-party middleware</li>
+            <li>Body Parsing</li>
+            <li>Signed cookies</li>
+            <li>Session support</li>
+            <li>Static file serving</li>
+            <li>Authentication/Authorization</li>
+            <li>Logging</li>
+            <li>Debugging</li>
+            <li>much-much more <a href="http://expressjs.com/resources/middleware.html">else</a></li>
         </ul>
     </section>
 
     <section>
-        <!--TODO: Схема, как работают мидлверы. Полная.-->
+        <h2>General picture</h2>
+
+        <img src="middleware.jpg" alt=""/>
+        <p>Express app is a queue of middlewares.</p>
     </section>
 
     <section>
-        <h2>Popular & Needed Midleware</h2>
+        <h2>Body-parser</h2>
 
-        http://expressjs.com/resources/middleware.html
-        <ul>
-            <li>Body Parser</li>
-            <li>Cookie Parser</li>
-            <li>express-debug</li>
-            <li>express-session</li>
-            <li>Morgan</li>
-            <li>Favicon</li>
-        </ul>
+        <p>Parses response body in any encoding (including gzip)</p>
+        <p>Takes care of JSON, unlencoded etc</p>
 
+        <pre><code>
+var express = require('express')
+var bodyParser = require('body-parser')
+
+var app = express()
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+        </code></pre>
+
+        <p>Params are gathered in req.body</p>
     </section>
 
-    <!--TODO: Покажем пример, как настроить эти все мидл веры.-->
+    <section>
+        <h2>Cookie Parser</h2>
 
+        <p>Parse Cookie header and populate req.cookies with an object keyed by the cookie names.</p>
+
+        <pre><code>
+var express      = require('express')
+var cookieParser = require('cookie-parser')
+
+var app = express()
+app.use(cookieParser())
+        </code></pre>
+
+        <p>*supports signed cookie</p>
+    </section>
+
+    <section>
+        <h2>Session</h2>
+
+        <p>Session id is saved in cookie.</p>
+        <p>Session data is stored in memory*</p>
+
+        <pre><code>
+var express = require('express')
+var bodyParser = require('body-parser')
+
+var app = express()
+
+app.use(session({ secret: 'keyboard cat'}));
+        </code></pre>
+
+        <p>So req gets .session property.</p>
+    </section>
+
+    <section>
+        <h2>Static server</h2>
+
+        <p>Build-in in Express</p>
+
+        <pre><code>
+app.use(express.static('public'));
+        </code></pre>
+
+        <p>Static files from Public are accessible.</p>
+    </section>
+
+    <section>
+        <h2>Error handling</h2>
+
+        <p>If middleware takes 4 arguments, it's an error handler.</p>
+
+        <pre><code>
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+        </code></pre>
+
+        <p>Should be defined last.</p>
+    </section>
 </div>
 
 		</div>
