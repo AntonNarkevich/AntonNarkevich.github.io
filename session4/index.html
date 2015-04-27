@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Node.js: 4</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section>
+            <h1>Node.js</h1>
+
+            <p>Membership</p>
+
+            <p>Data Access</p>
+        </section>
+        <section>
+            <h1>Plan</h1>
+            <ul>
+                <li>
+                    <a href="http://passportjs.org/">Passport.js</a>
+                    <ul>
+                        <li>Local strategy</li>
+                        <li>Roles</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://mongoosejs.com/">Mongoose</a> / <a href="http://docs.sequelizejs.com/en/latest/">Sequelize</a>
+                    <ul>
+                        <li>Models</li>
+                        <li>CRUD</li>
+                        <li>Relations</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h1>Passport.js</h1>
+            <p>
+                Passport is authentication middleware for Node.js. Extremely flexible and modular.
+            </p>
+            <pre><code data-trim>
+                npm i passport
+            </code></pre>
+        </section>
+        <section>
+            <h1>Features</h1>
+            <ul>
+                <li>140+ authentication strategies</li>
+                <li>Single sign-on with OpenID and OAuth</li>
+                <li>Easily handle success and failure</li>
+                <li>Supports persistent sessions</li>
+                <li>Dynamic scope and permissions</li>
+                <li>Pick and choose required strategies</li>
+                <li>Implement custom strategies</li>
+                <li>Does not mount routes in application</li>
+                <li>Lightweight code base</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Local strategy</h1>
+            <pre><code data-trim>
+                npm i passport-local
+            </code></pre>
+        </section>
+        <section>
+            <h1>Configure Passport</h1>
+             <pre><code data-trim>
+var session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
+
+    app.use(session({secret: 'blablalba'}));
+    app.use(passport.initialize());
+    app.use(passport.session());
+             </code></pre>
+        </section>
+        <section>
+            <h1>Register strategy</h1>
+            <pre><code data-trim>
+    passport.use(new LocalStrategy(function (username, password, done) {
+        if(username === 'vasya' && password === 'pupkin') {
+            done(null, {firstName: 'Vasya', lastName: 'Pupkin'});
+        } else {
+            done(null, false);
+        }
+    }));
+             </code></pre>
+        </section>
+        <section>
+            <h1>Register strategy</h1>
+            <pre><code data-trim>
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            User.findOne({ username: username }, function (err, user) {
+                if (err) { return done(err); }
+                if (!user) { return done(null, false); }
+                if (!user.verifyPassword(password)) { return done(null, false); }
+                return done(null, user);
+            });
+        }
+    ));
+            </code></pre>
+        </section>
+        <section>
+            <h1>Parameters</h1>
+            <pre><code data-trim>
+    passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'passwd'
+    },
+    function(username, password, done) {
+        // ...
+    }));
+            </code></pre>
+        </section>
+        <section>
+            <h1>Serialization</h1>
+            <pre><code data-trim>
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+        done(null, user);
+    });
+            </code></pre>
+        </section>
+        <section>
+            <h1>Serialization</h1>
+            <pre><code data-trim>
+    passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, function (err, user) {
+            done(err, user);
+        });
+    });
+             </code></pre>
+        </section>
+        <section>
+            <h1>Login handler</h1>
+            <pre><code data-trim>
+    router.post('/login', passport.authenticate('local', {failureRedirect: '/'}), function (req, res) {
+        res.redirect('/user');
+    });
+            </code></pre>
+        </section>
+        <section>
+            <h1>Using user object</h1>
+            <pre><code data-trim>
+    router.get('/user', function (req, res) {
+        res.render('user', {user: req.user});
+    });
+            </code></pre>
+        </section>
+        <section>
+            <h1>Logout handler</h1>
+            <pre><code data-trim>
+    router.get('/logout', function(req, res){
+        req.logout();
+        res.redirect('/');
+    });
+            </code></pre>
+        </section>
+        <section>
+            <h1>Demo</h1>
+        </section>
+        <section>
+            <h1>connect-roles</h1>
+            <p>Connect roles is designed to work with connect or express. It is an authorisation provider, not an authentication provider.</p>
+            <pre><code data-trim>
+npm i connect-roles
+            </code></pre>
+        </section>
+        <section>
+            <h1>Using</h1>
+            <pre><code data-trim>
+var ConnectRoles = require('connect-roles');
+
+var user = new ConnectRoles({...});
+
+app.use(yourAuthenticationMiddleware)
+
+app.use(user.middleware());
+            </code></pre>
+        </section>
+        <section>
+            <h1>Using</h1>
+            <pre><code data-trim>
+user.use('moderate', function (req) {
+    if (req.user.role === 'moderator') {
+        return true;
+    }
+})
+            </code></pre>
+        </section>
+        <section>
+            <h1>Add checking</h1>
+            <pre><code data-trim>
+app.get('/blabla', user.can('moderate'), function (req, res) {
+    res.render('blabla');
+});
+            </code></pre>
+        </section>
+        <section>
+            <h1>Demo</h1>
+        </section>
+        <section>
+            <h1>Mongoose</h1>
+            <p>elegant mongodb object modeling for node.js</p>
+            <pre><code data-trim>
+npm i mongoose
+            </code></pre>
+        </section>
+        <section>
+            <h1>Connection</h1>
+            <pre><code data-trim>
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://user:password@ds037087.mongolab.com:37087/example');
+            </code></pre>
+        </section>
+        <section>
+            <h1>Schema</h1>
+            <p>elegant mongodb object modeling for node.js</p>
+            <pre><code data-trim>
+    var schema = new Schema({
+        title:  String,
+        author: String,
+        body:   String,
+        comments: [{ body: String, date: Date }],
+        date: { type: Date, default: Date.now },
+        hidden: Boolean,
+        meta: {
+            votes: Number,
+            favs:  Number
+        }
+    });
+    var Blog = mongoose.model('Blog', schema);
+            </code></pre>
+        </section>
+        <section>
+            <h1>Data types</h1>
+            <ul>
+                <li>String</li>
+                <li>Number</li>
+                <li>Date</li>
+                <li>Buffer</li>
+                <li>Boolean</li>
+                <li>Mixed</li>
+                <li>ObjectId</li>
+                <li>Array</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Hooks</h1>
+            <pre><code data-trim>
+schema.pre('save', function (doc) {
+    //do something
+});
+
+schema.post('save', function (doc) {
+    //do something
+});
+            </code></pre>
+        </section>
+        <section>
+            <h1>Validation</h1>
+
+            <ul>
+                <li>Validation is defined in the SchemaType</li>
+                <li>Validation is an internal piece of middleware</li>
+                <li>Validation occurs when a document attempts to be saved, after defaults have been applied</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Validation</h1>
+
+            <ul>
+                <li>Validators are not run on undefined values. The only exception is the required validator.</li>
+                <li>Validation is asynchronously recursive; when you call Model#save, sub-document validation is executed as well. If an error occurs, your Model#save callback receives it</li>
+                <li>Validation supports complete customization</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Built in validators</h1>
+            <ul>
+                <li>All SchemaTypes have the built in <strong>required</strong> validator.</li>
+                <li>Numbers have <strong>min</strong> and <strong>max</strong> validators.</li>
+                <li>Strings have <strong>enum</strong> and <strong>match</strong> validators.</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Custom validator</h1>
+            <pre><code data-trim>
+// make sure every value is equal to "something"
+function validator (val) {
+    return val == 'something';
+}
+new Schema({ name: { type: String, validate: validator }});
+            </code></pre>
+        </section>
+        <section>
+            <h1>Custom validator</h1>
+            <pre><code data-trim>
+// with a custom error message
+
+var custom = [validator, 'Uh oh, {PATH} does not equal "something".']
+new Schema({ name: { type: String, validate: custom }});
+            </code></pre>
+        </section>
+        <section>
+            <h1>Custom validators</h1>
+            <pre><code data-trim>
+var many = [
+    { validator: validator, msg: 'uh oh' },
+    { validator: anotherValidator, msg: 'failed' }
+];
+new Schema({ name: { type: String, validate: many }});
+            </code></pre>
+        </section>
+        <section>
+            <h1>Custom validator</h1>
+            <pre><code data-trim>
+// or utilizing SchemaType methods directly:
+
+var schema = new Schema({ name: 'string' });
+schema.path('name').validate(validator, 'validation of `{PATH}` failed with value `{VALUE}`');
+            </code></pre>
+        </section>
+        <section>
+            <h1>Virtuals</h1>
+            <p>Virtuals are document properties that you can get and set but that do not get persisted to MongoDB</p>
+            <pre><code data-trim>
+schema.virtual('fullName').get(function () {
+    return this.name.first + ' ' + this.name.last;
+});
+            </code></pre>
+            <p>
+                NOTE: virtuals are not included in JSON by default
+            </p>
+        </section>
+        <section>
+            <h1>CRUD</h1>
+            <p>Demo!</p>
+        </section>
+        <section>
+            <h1>Sequelize</h1>
+            <p>Sequelize is a promise-based ORM for Node.js and io.js.</p>
+            <pre><code data-trim>
+npm install sequelize
+npm install mysql
+            </code></pre>
+        </section>
+        <section>
+            <h1>Dialects</h1>
+            <ul>
+                <li>PostgreSQL</li>
+                <li>MySQL</li>
+                <li>MariaDB</li>
+                <li>SQLite</li>
+                <li>MSSQL</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Connection</h1>
+            <pre><code data-trim>
+var sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql',
+    pool: {max: 5,min: 0,idle: 10000},
+    // SQLite onlystorage: 'path/to/database.sqlite'
+});
+
+// Or you can simply use a connection uri
+var sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
+            </code></pre>
+        </section>
+        <section>
+            <h1>Schema</h1>
+            <pre><code data-trim>
+sequelize.define('Category', {
+    name: {
+        type: DataTypes.STRING
+    },
+    description: {
+        type: DataTypes.STRING
+    }
+}, {
+    freezeTableName: true
+})
+            </code></pre>
+        </section>
+        <section>
+            <h1>Types</h1>
+            <p><a href="http://sequelize.readthedocs.org/en/latest/docs/models/#data-types">Data types</a></p>
+        </section>
+        <section>
+            <h1>Hooks</h1>
+            <p><a href="http://sequelize.readthedocs.org/en/latest/docs/hooks/#order-of-operations">Order of Operations</a></p>
+            <pre><code data-trim>
+sequelize.define('Category', {
+    //...
+}, {
+    hooks: {
+        afterValidate: function (item) {
+            return doSomethingAndReturnPromise(item);
+        }
+    }
+})
+            </code></pre>
+        </section>
+        <section>
+            <h1>Validation</h1>
+            <p><a href="http://sequelize.readthedocs.org/en/latest/docs/models/#validations">Long list of default validators</a></p>
+        </section>
+        <section>
+            <h1>Custom Validation</h1>
+            <pre><code data-trim>
+var Pub = Sequelize.define('Pub', {
+    //..
+}, {
+    validate: {
+        bothCoordsOrNone: function() {
+            if ((this.latitude === null) === (this.longitude === null)) {
+                throw new Error('Require either both latitude and longitude or neither')
+            }
+        }
+    }
+})
+            </code></pre>
+        </section>
+        <section>
+            <h1>CRUD</h1>
+            <p>Demo!</p>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
