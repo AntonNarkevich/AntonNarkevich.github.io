@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style>
+            *[no-border] {
+                border: none !important;
+            }
+
+            *[no-uppercase] {
+                text-transform: none !important;
+            }
+
+            * [red] {
+                color: rgba(255, 42, 22, 0.84);
+            }
+
+            h1, h2, h3, h4 {
+                color: #80bd01 !important;
+            }
+
+            * [green] {
+                color: #80bd01 !important;
+            }
+
+            * [white] {
+                color: white !important;
+            }
+
+            * [block] {
+                display: block !important;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+    <section>
+        <h1>Advanced Node Topics</h1>
+    </section>
+
+    <section>
+        <h2>Contents</h2>
+
+        <ol>
+            <li>Part 1. EventEmitters</li>
+            <li>Part 2. Streams</li>
+            <li>Part 3. Buffers</li>
+            <li>Part 4. socket.io</li>
+            <li>Part 5. Child Process</li>
+            <li>Part 6. Cluster</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>Part 1. EventEmitters</h2>
+
+        <p>Stability: 4 - API Frozen</p>
+    </section>
+
+    <section>
+        <h2>Emits events</h2>
+        <p>Many objects in Node emit events.</p>
+        <pre><code>
+            process.on('uncaughtException', function(err) { //Uncaught exception
+            process.on('SIGHUP', function() { //Terminal closed
+            childProcess1.stderr.on('data', function (data) {
+        </code></pre>
+
+        <p>And many others like this:</p>
+        <img src="emitterDoc.png" alt=""/>
+    </section>
+
+    <section>
+
+    </section>
+
+    <section>
+        //Once
+    </section>
+
+    <section>
+        //Memory leak on +10 listeners
+    </section>
+
+    <section>
+        //Кастом эмиттер
+    </section>
+
+    <section>
+        //Поэтому нельзя вызывать коллбеки на том же тике.
+    </section>
+
+    <section>
+        //Promisify
+    </section>
+
+</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
