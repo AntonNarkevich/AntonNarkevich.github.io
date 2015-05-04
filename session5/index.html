@@ -108,29 +108,363 @@
     </section>
 
     <section>
+        <h2>Main methods</h2>
 
+        <ul>
+            <li>.on (.addListener) - adds listener</li>
+            <li>.once - listener fires only once</li>
+            <li>.emit - emits event, passes data</li>
+            <li>.removeListener, .removeAllListeners</li>
+        </ul>
     </section>
 
     <section>
-        //Once
+        <h2>Creating owr own</h2>
+
+        <pre><code>
+var EventEmitter = require('events').EventEmitter;
+
+var Radio = function (station) {
+    EventEmitter.call(this);
+    var self = this;
+    //IMPORTANT. Not on the same tick.
+    setTimeout(function () {
+        self.emit('open', {station: station});
+    }, 0);
+};
+// extend the EventEmitter
+util.inherits(Radio, EventEmitter);
+        </code></pre>
     </section>
 
     <section>
-        //Memory leak on +10 listeners
+        <h2>Let's do it quick</h2>
+
+        <p>Example 1</p>
     </section>
 
     <section>
-        //Кастом эмиттер
+        <h2>Events</h2>
+
+        <ul>
+            <li>self.on('newListener', ..</li>
+            <li>self.on('removeListener', ..</li>
+        </ul>
     </section>
 
     <section>
-        //Поэтому нельзя вызывать коллбеки на том же тике.
+        <h2>It's easy to get memory leaks here.</h2>
+
+        <p>Example 2</p>
     </section>
 
     <section>
-        //Promisify
+        <h2>Memory leak detection</h2>
+
+        <p>By default you'll get warning on 11th listener.</p>
+        <p>You can change this restriction .setMaxListeners(0)</p>
     </section>
 
+    <section>
+        <!-- TODO: Error event not handled. Throw error.-->
+    </section>
+
+    <section>
+        <!-- TODO: Consider promisification-->
+        <h2>Promisifying EventEmitters</h2>
+
+        <a href="http://stackoverflow.com/questions/26448186/how-to-promisify-node-js-net-connect-with-bluebird">Why not to do this</a>
+
+        <p>But if you need:</p>
+
+        <pre><code>
+defer()
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Part 2. Streams</h2>
+
+        <p>Similar to linux console ls | grep etc.</p>
+    </section>
+
+    <section>
+        <h2>General info</h2>
+
+        <p>Well known streams: request, response, stdout, files etc</p>
+
+        <ul>
+            <li>Can be Readable, Writable, Duplex, Transform</li>
+            <li>Stream are EventEmitters</li>
+            <li>You can chain them</li>
+        </ul>
+    </section>
+
+    <section>
+        <p>The Readable stream represents a source of data that you are reading from.</p>
+        <p>Data comes out of a Readable stream.</p>
+
+        <pre><code>
+
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Modes</h2>
+
+        <ul>
+            <li>Flowing</li>
+            <li>Paused (Default)</li>
+        </ul>
+
+        <p>Let's see example 3.</p>
+    </section>
+
+    <section>
+        <h2>Ways to start flowing</h2>
+
+        <ul>
+            <li>.on('data') implicityly starts flowing</li>
+            <li>.pipe(writableStream) implicityly starts flowing</li>
+            <li>.resume() explicit way. Note: no 'data' listeners - data will be lost.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Ways to pause</h2>
+
+        <ul>
+            <li>.pause()</li>
+            <li>remove all 'data' handlers, .unpipe() all pipes.</li>
+        </ul>
+
+        <p>Backwards compatibility: removing 'data' handlers will not pause the stream.</p>
+        <p>Note: If you .pause() but not .unpipe(). Destination will cause resuming as it drains.</p>
+    </section>
+
+    <section>
+        <h2>Alternative way to <span>.read()</span></h2>
+
+        <pre><code>
+var readableStream = fs.createReadStream('lorem.txt');
+
+readableStream.on('readable', function () {
+    var chunk;
+
+    //Pass how much to read. If null - wait for 'readable' event.
+    while (null !== (chunk = readableStream.read(30))) {
+        console.log('Was read: %d bytes', chunk.length);
+    }
+});
+        </code></pre>
+
+        <!-- TODO: How it works with 'data' event.-->
+    </section>
+
+    <section>
+        <h2>Writable streams</h2>
+
+        <p>The Writable stream interface is an abstraction for a destination that you are writing data to.</p>
+
+        <p>Where: response, files, stdout etc.</p>
+    </section>
+
+    <section>
+        <h2 no-uppercase>.write() and .on('drain')</h2>
+
+        <p>If writableStream.write(chunk) returns false,
+            it's recommended to wait until 'drain' event
+            because system has to buffer data.
+
+            This is <a href="https://nodejs.org/api/stream.html#stream_event_drain">difficult</a>.
+        </p>
+
+        <p>Pipe()'ing handles pressure implicitly. Not to pause/resume manually.</p>
+    </section>
+
+    <section>
+        <h2 no-uppercase>.on('finish')</h2>
+
+        <p>Calling .end(chunk) emmits 'finish' events.
+            Further .writes will cause errors.
+        </p>
+    </section>
+
+    <section>
+        <p>Time for example 5.</p>
+    </section>
+
+    <section>
+        <h2>Duplex streams</h2>
+
+        <p>Are both readable and writable</p>
+
+        <p>Examples: zip stream, crypto stream.</p>
+    </section>
+
+    <section>
+        <h2>Real stream power</h2>
+
+        <p>Example 6</p>
+    </section>
+
+    <section>
+        <h2>Create your own streams</h2>
+
+        <a href="https://nodejs.org/api/stream.html#stream_api_for_stream_implementors">The guide</a> waits for you.
+    </section>
+
+    <section>
+        <h2>the book</h2>
+
+        <p>Is <a href="https://github.com/substack/stream-handbook">here</a>.</p>
+    </section>
+
+    <section>
+        <h2>Part 3. Buffers</h2>
+
+        <p>Relax, just binary data.</p>
+    </section>
+
+    <section>
+        <!-- TODO: Redact-->
+
+        Pure javascript, while great with unicode-encoded strings, does not handle straight binary data very well.
+        Node.js servers have to also deal with TCP streams and reading and writing to the filesystem.
+        Firs Node.js used strings anyway. Bug it's slow. So Buffers were created.
+    </section>
+
+    <section>
+        <!-- TODO: Redact-->
+
+        Buffers are instances of the Buffer class in node, which is designed to handle raw binary data.
+        Each buffer corresponds to some raw memory allocated outside V8.
+        Buffers act somewhat like arrays of integers, but aren't resizable and have a whole bunch of methods specifically for binary data.
+        In addition, the "integers" in a buffer each represent a byte and so are limited to values from 0 to 255 (2^8 - 1), inclusive.
+    </section>
+
+    <section>
+        <!-- TODO: Methods-->
+    </section>
+
+    <section>
+        <!-- TODO: Example-->
+    </section>
+
+    <section>
+        <h2>Part 5. Child Process</h2>
+    </section>
+
+    <section>
+
+        <!--TODO: Methods & events-->
+    </section>
+
+    <section>
+        <h2>Ways to create child process</h2>
+
+        <ul>
+            <li>child_process.spawn - universal, stdout, stdin, stderr are streams</li>
+            <li>child_process.exec - buffers those streams</li>
+            <li>child_process.execFile - same, executes file</li>
+            <li>child_process.fork - creates Node.js process. Allows to .send(messages)</li>
+
+            <li>++ sync analogs</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 no-uppercase>spawn</h2>
+
+        <p>Starts something by console command. Gives you streams to handle results.</p>
+        <p>You can attatch stdin, stdout and stderr to current process or elsewhere.
+            See <a href="https://nodejs.org/api/child_process.html#child_process_options_stdio">the doc</a>.</p>
+
+        <p>Example 7 goes here</p>
+    </section>
+
+    <section>
+        <h2>exec if you don't like streams</h2>
+
+        <pre><code>
+var exec = require('child_process').exec;
+
+//Not needed on linux
+var windowsPrefix = process.env.comspec + ' /c ';
+
+child = exec(windowsPrefix + 'ipconfig', function (err, stdout, stderr) {
+    if (err) { throw err; }
+
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+});
+        </code></pre>
+
+        <p>This simple.</p>
+    </section>
+
+    <section>
+        <h2>Fork</h2>
+
+        <p>Creates node.js process with easy communication.</p>
+
+        <pre><code>
+//master.js
+var slave = cp.fork('./slave');
+
+slave.send(anyData);
+
+slave.on('message', function(dataFromSlave) {
+});
+        </code></pre>
+
+        <pre><code>
+//slave.js
+process.on('message', function (dataFromMaster) {
+});
+
+process.send(dataToMaster);
+        </code></pre>
+
+        <p>Example 9.</p>
+    </section>
+
+    <section>
+        <h2>gist</h2>
+
+        <p>Heavy computing should be performed in separate processes.</p>
+    </section>
+
+    <section>
+        <h2>Part 6. Cluster</h2>
+
+        <p>On top of this debauchery.</p>
+        <p>Note: Stability: 2 - Unstable</p>
+    </section>
+
+    <section>
+        <!-- TODO: What is clustering-->
+    </section>
+
+    <section>
+        <h2>Production ready alternatives</h2>
+
+        <ul>
+            <li>
+                <!-- TODO: Check it out-->
+                <a href="https://github.com/Unitech/pm2">PM2</a> 7,5k stars at GitHub
+            </li>
+            <li>
+                Deploy env tools (say Heroku has dynos).
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Part 4. socket.io</h2>
+
+        <p>Yes, finally</p>
+    </section>
 </div>
 
 		</div>
