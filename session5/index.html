@@ -166,19 +166,30 @@ util.inherits(Radio, EventEmitter);
     </section>
 
     <section>
-        <!-- TODO: Error event not handled. Throw error.-->
+        <h2>Error</h2>
+
+        <p>When an EventEmitter instance experiences an error, the typical action is to emit an 'error' event.
+            If there is no listener throws error.
+        </p>
     </section>
 
     <section>
-        <!-- TODO: Consider promisification-->
         <h2>Promisifying EventEmitters</h2>
 
         <a href="http://stackoverflow.com/questions/26448186/how-to-promisify-node-js-net-connect-with-bluebird">Why not to do this</a>
 
-        <p>But if you need:</p>
-
         <pre><code>
-defer()
+            var defer = Promise.defer();
+
+            emitter.once('someEvent', function (data) {
+                defer.resolve(data);
+            });
+
+            emitter.on('error', function (err) {
+                defer.reject(err);
+            });
+
+            return defer.promise;
         </code></pre>
     </section>
 
@@ -327,37 +338,58 @@ readableStream.on('readable', function () {
     </section>
 
     <section>
-        <!-- TODO: Redact-->
+        <h2>What's it</h2>
 
-        Pure javascript, while great with unicode-encoded strings, does not handle straight binary data very well.
-        Node.js servers have to also deal with TCP streams and reading and writing to the filesystem.
-        Firs Node.js used strings anyway. Bug it's slow. So Buffers were created.
+        <p>
+        In pure js there is no way to process binary data. (from file, TCP)
+        Firs Node.js used binary strings. Bug it's slow.
+        </p>
+        <p>
+        So Buffers were created.
+        </p>
     </section>
 
     <section>
-        <!-- TODO: Redact-->
+        <!-- TODO: Where buffer memory is allocated-->
 
-        Buffers are instances of the Buffer class in node, which is designed to handle raw binary data.
-        Each buffer corresponds to some raw memory allocated outside V8.
-        Buffers act somewhat like arrays of integers, but aren't resizable and have a whole bunch of methods specifically for binary data.
-        In addition, the "integers" in a buffer each represent a byte and so are limited to values from 0 to 255 (2^8 - 1), inclusive.
+        <p>
+        Buffers are instances of the <a href="https://nodejs.org/api/buffer.html">Buffer class.</a>
+        </p>
+
+        <p>Act like <strong>fixed size</strong> array of ints 0 to 255.</p>
     </section>
 
     <section>
-        <!-- TODO: Methods-->
-    </section>
-
-    <section>
-        <!-- TODO: Example-->
+        <h2>Methods</h2>
+        <ul>
+            <li>new Buffer(size || array || string ..)</li>
+            <li>buf[i]</li>
+            <li>buf.length</li>
+            <li>.read()'s of any kind</li>
+            <li>.writes()'s of any kind</li>
+            <li>.concat()</li>
+            <li>.slice()</li>
+            <li>.compare()</li>
+        </ul>
     </section>
 
     <section>
         <h2>Part 5. Child Process</h2>
+
+        <p>A way to execute something in parallel process.</p>
     </section>
 
     <section>
+        <p>So you've got a process object.</p>
+        <h2>chil</h2>
 
-        <!--TODO: Methods & events-->
+        <ul>
+            <li>.pid</li>
+            <li>Streams: stdin, stdout, stderr</li>
+            <li>.send() *for .forked only</li>
+            <li>Events: error, exit, close</li>
+            <li>.kill(signal)</li>
+        </ul>
     </section>
 
     <section>
@@ -443,7 +475,11 @@ process.send(dataToMaster);
     </section>
 
     <section>
-        <!-- TODO: What is clustering-->
+        <h2>What's it</h2>
+
+        <p>Built-in load balancer to take advantage of multi-core systems.</p>
+        <p>Creates multiple processes -&gt; servers, shares requests between.</p>
+        <p>All resources are shared.</p>
     </section>
 
     <section>
@@ -464,6 +500,120 @@ process.send(dataToMaster);
         <h2>Part 4. socket.io</h2>
 
         <p>Yes, finally</p>
+    </section>
+
+    <section>
+        <h2>What is it?</h2>
+
+        <p>Duplex communication between client and server</p>
+
+        <p>(Not only the client calls server. Server can ping client.)</p>
+    </section>
+
+    <section>
+        <h2>What for?</h2>
+
+        <ul>
+            <li>Chats</li>
+            <li>vk.com</li>
+            <li>Online games</li>
+            <li>Real time analytics</li>
+        </ul>
+
+        <p>No need to send ajax calls each ... seconds.</p>
+    </section>
+
+    <section>
+        <h2>how it works</h2>
+
+        <p>Independent protocol over TCP, no connection with HTTP</p>
+    </section>
+
+    <section>
+        <h2>browser support</h2>
+
+        <p>All browsers are supported</p>
+
+        <ul>
+            <li>WebSocket protocol</li>
+            <li>Adobe flash sockets</li>
+            <li>JSONP Polling</li>
+            <li>AJAX Polling</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>How to use</h2>
+
+        <pre><code>
+npm i socket.io
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>server</h2>
+
+        <pre><code>
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+server.listen(80);
+        </code></pre>
+
+        <pre><code>
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>client</h2>
+
+        <pre><code>
+<!-- socket.io will respond with this script itself -->
+<script src="/socket.io/socket.io.js"></script>
+        </code></pre>
+
+        <pre><code>
+var socket = io.connect('http://localhost');
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Main methods</h2>
+
+        <ul>
+            <li>.emit('eventName', data)</li>
+            <li>.on('eventName', handler)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>additional features</h2>
+
+        <ul>
+            <li>namespaces</li>
+            <li>rooms</li>
+            <li>acknowledgements</li>
+            <li>much else</li>
+        </ul>
+    </section>
+
+    <section>
+        <p>Example 11</p>
+    </section>
+
+    <section>
+        <h2>Thanks for the attention</h2>
     </section>
 </div>
 
