@@ -1,0 +1,4 @@
+This message should be zipped.
+Then encrypted.
+Then decrypted.
+Thend unzipped.

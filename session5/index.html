@@ -76,31 +76,40 @@
     </section>
 
     <section>
+        <h2>Express.js quiz</h2>
+
+        <a href="https://docs.google.com/document/d/165tEbCcKsW8sVB_IwUwGAo9D2bCCSo2hEkDv4cLVEGQ/edit?usp=sharing">Discussion</a>
+    </section>
+
+    <section>
         <h2>Contents</h2>
 
-        <ol>
-            <li>Part 1. EventEmitters</li>
+        <ul>
+            <li>Part 1. Event Emitters</li>
             <li>Part 2. Streams</li>
             <li>Part 3. Buffers</li>
             <li>Part 4. socket.io</li>
             <li>Part 5. Child Process</li>
             <li>Part 6. Cluster</li>
-        </ol>
+        </ul>
     </section>
 
     <section>
         <h2>Part 1. EventEmitters</h2>
 
         <p>Stability: 4 - API Frozen</p>
+
+        <img src="NewsMedia173.jpeg" alt=""/>
     </section>
 
     <section>
         <h2>Emits events</h2>
         <p>Many objects in Node emit events.</p>
         <pre><code>
-            process.on('uncaughtException', function(err) { //Uncaught exception
-            process.on('SIGHUP', function() { //Terminal closed
-            childProcess1.stderr.on('data', function (data) {
+process.on('uncaughtException', function(err) { //Uncaught exception
+process.on('SIGHUP', function() { //Terminal closed
+file.on('error', function (data) {
+smth.on('data', ...
         </code></pre>
 
         <p>And many others like this:</p>
@@ -108,29 +117,544 @@
     </section>
 
     <section>
+        <h2>Main methods</h2>
+
+        <ul>
+            <li>.on (.addListener) - adds listener</li>
+            <li>.once - listener fires only once</li>
+            <li>.emit - emits event, passes data</li>
+            <li>.removeListener, .removeAllListeners</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Creating owr own</h2>
+
+        <pre><code>
+var EventEmitter = require('events').EventEmitter;
+
+var Radio = function (station) {
+    EventEmitter.call(this);
+    var self = this;
+    //IMPORTANT. Not on the same tick.
+    setTimeout(function () {
+        self.emit('open', {station: station});
+    }, 0);
+};
+// extend the EventEmitter
+util.inherits(Radio, EventEmitter);
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Let's do it quick</h2>
+
+        <p><a href="https://github.com/AntonNarkevich/AntonNarkevich.github.io/tree/master/session5/examples/example1">Example 1</a></p>
+    </section>
+
+    <section>
+        <h2>Events</h2>
+
+        <ul>
+            <li>self.on('newListener', ..</li>
+            <li>self.on('removeListener', ..</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Avoiding memory leaks</h2>
+
+        <!-- TODO: Indeed how can I get memory leaks here?-->
+
+        <p><a href="https://github.com/AntonNarkevich/AntonNarkevich.github.io/tree/master/session5/examples/example2">Example 2</a></p>
+    </section>
+
+    <section>
+        <h2>Memory leak detection</h2>
+
+        <p>By default you'll get warning on 11th listener.</p>
+        <p>You can change this restriction .setMaxListeners(0)</p>
+    </section>
+
+    <section>
+        <h2>Error</h2>
+
+        <p>If error happens, emitter emits 'error' event.</p>
+        <p>If there is no listener throws error.</p>
+
+        <a href="https://github.com/AntonNarkevich/AntonNarkevich.github.io/tree/master/session5/examples/example2.2">Example 2.2</a>
+    </section>
+
+    <section>
+        <h2>Promisifying EventEmitters</h2>
+
+        <a href="http://stackoverflow.com/questions/26448186/how-to-promisify-node-js-net-connect-with-bluebird">Why not to do this</a>
+
+        <pre><code>
+var defer = Promise.defer();
+
+emitter.once('someEvent', function (data) {
+    defer.resolve(data);
+});
+
+emitter.on('error', function (err) {
+    defer.reject(err);
+});
+
+return defer.promise;
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Part 2. Streams</h2>
+
+        <p>Like .Net Stream class</p>
+        <p>Similar to linux console ls | grep etc.</p>
+
+        <img height="250" src="dataStream.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>General info</h2>
+
+        <p>Well known streams: request, response, stdout, files etc</p>
+
+        <ul>
+            <li>Can be Readable, Writable, Transform</li>
+            <li>Stream are EventEmitters</li>
+            <li>You can chain them</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Readable streams</h2>
+
+        <p>The Readable stream represents a source of data that you are reading from.</p>
+
+        <pre><code>
+            var readStream = fs.createReadStream('file.txt');
+        </code></pre>
+
+        <p>Data comes out of a Readable stream.</p>
 
     </section>
 
     <section>
-        //Once
+        <h2>Modes</h2>
+
+        <ul>
+            <li>Flowing</li>
+            <li>Paused (Default)</li>
+        </ul>
+
+        <p>Let's see <a href="https://github.com/AntonNarkevich/AntonNarkevich.github.io/tree/master/session5/examples/example3">example 3</a>.</p>
     </section>
 
     <section>
-        //Memory leak on +10 listeners
+        <h2>Ways to start flowing</h2>
+
+        <ul>
+            <li>.on('data') implicityly starts flowing</li>
+            <li>.pipe(writableStream) implicityly starts flowing</li>
+            <li>.resume() explicit way. Note: no 'data' listeners - data will be lost.</li>
+        </ul>
+
+        <img src="voda.jpeg" height="300" alt=""/>
     </section>
 
     <section>
-        //Кастом эмиттер
+        <h2>Ways to pause</h2>
+
+        <ul>
+            <li>.pause()</li>
+            <li>remove all 'data' handlers, .unpipe() all pipes.</li>
+        </ul>
+
+        <p style="margin-top:80px">Removing 'data' handlers will not pause the stream.</p>
+        <p>If you .pause() but not .unpipe(). Destination will cause resuming as it drains.</p>
     </section>
 
     <section>
-        //Поэтому нельзя вызывать коллбеки на том же тике.
+        <h2>Alternative way to <span>.read()</span></h2>
+
+        <pre><code>
+var readableStream = fs.createReadStream('lorem.txt');
+
+readableStream.on('readable', function () {
+    var chunk;
+
+    //Pass how much to read. If null - wait for 'readable' event.
+    while (null !== (chunk = readableStream.read(30))) {
+        console.log('Was read: %d bytes', chunk.length);
+    }
+});
+        </code></pre>
+
+        <!-- TODO: How it works with 'data' event.-->
     </section>
 
     <section>
-        //Promisify
+        <h2>Writable streams</h2>
+
+        <p>The Writable stream interface is an abstraction for a destination that you are writing data to.</p>
+
+        <p>Where: response, files, stdout etc.</p>
     </section>
 
+    <section>
+        <h2 no-uppercase>.write() and .on('drain')</h2>
+
+        <p>If writableStream.write(chunk) returns false,
+            it's recommended to wait until 'drain' event
+            because system has to buffer data.
+
+        </p>
+
+        <p>This is <a href="https://nodejs.org/api/stream.html#stream_event_drain">difficult</a>.
+            Pipe()'ing handles pressure implicitly. Not to pause/resume manually.</p>
+    </section>
+
+    <section>
+        <h2 no-uppercase>.on('finish')</h2>
+
+        <p>Calling .end(chunk) emmits 'finish' events.
+            Further .writes will cause errors.
+        </p>
+    </section>
+
+    <section>
+        <p>Time for example 5.</p>
+    </section>
+
+    <section>
+        <h2>Transform streams (Duplex)</h2>
+
+        <p>Are both readable and writable</p>
+
+        <p>Examples: zip stream, crypto stream.</p>
+    </section>
+
+    <section>
+        <h2>Real stream power</h2>
+
+        <img src="duplex.jpg" alt=""/>
+
+        <p>Example 6</p>
+    </section>
+
+    <section>
+        <h2>Create your own streams</h2>
+
+        <a href="https://nodejs.org/api/stream.html#stream_api_for_stream_implementors">The guide</a> waits for you.
+    </section>
+
+    <section>
+        <h2>the book</h2>
+
+        <p>Is <a href="https://github.com/substack/stream-handbook">here</a>.</p>
+    </section>
+
+    <section>
+        <h2>Part 3. Buffers</h2>
+
+        <p>Relax, just binary data.</p>
+
+        <img src="zeros.png" alt=""/>
+    </section>
+
+    <section>
+        <h2>What's it</h2>
+
+        <p>
+        In pure js there is no way to process binary data. (file, TCP)
+        </p>
+        <p>
+            First Node.js used binary strings. Bug it's slow.
+        </p>
+        <p>
+        So Buffers were created.
+        </p>
+    </section>
+
+    <section>
+        <!-- TODO: Where buffer memory is allocated-->
+
+        <p>
+        Buffers are instances of the <a href="https://nodejs.org/api/buffer.html">Buffer class.</a>
+        </p>
+
+        <p>Act like <strong>fixed size</strong> array of ints 0 to 255.</p>
+    </section>
+
+    <section>
+        <h2>Methods</h2>
+        <ul>
+            <li>new Buffer(size || array || string ..)</li>
+            <li>buf[i]</li>
+            <li>buf.length</li>
+            <li>.read()'s of any kind</li>
+            <li>.writes()'s of any kind</li>
+            <li>.concat()</li>
+            <li>.slice()</li>
+            <li>.compare()</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Part 5. Child Process</h2>
+
+        <p>A way to execute something in parallel process.</p>
+
+        <img src="hydra.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>Child process object has</h2>
+
+        <ul>
+            <li>.pid</li>
+            <li>Streams: stdin, stdout, stderr</li>
+            <li>.send() *for .forked only</li>
+            <li>Events: error, exit, close</li>
+            <li>.kill(signal)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Ways to create child process</h2>
+
+        <ul>
+            <li>child_process.spawn - universal, stdout, stdin, stderr are streams</li>
+            <li>.exec - buffers those streams</li>
+            <li>.execFile - same, executes file</li>
+            <li>.fork - Node.js process. Allows to .send(messages)</li>
+
+            <li style="margin-top: 30px; display: block">++ sync analogs</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 no-uppercase>spawn</h2>
+
+        <p>Universal. Starts something by console command. Gives you streams to handle results.</p>
+        <p>Streams are configurable.
+            See <a href="https://nodejs.org/api/child_process.html#child_process_options_stdio">the doc</a>.</p>
+
+        <p style="margin-top: 100px;"><a href="">Example 7</a> goes here</p>
+    </section>
+
+    <section>
+        <h2>exec if you don't like streams</h2>
+
+        <pre><code>
+var exec = require('child_process').exec;
+
+//Not needed on linux
+var windowsPrefix = process.env.comspec + ' /c ';
+
+child = exec(windowsPrefix + 'ipconfig', function (err, stdout, stderr) {
+    if (err) { throw err; }
+
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+});
+        </code></pre>
+
+        <p>This simple.</p>
+    </section>
+
+    <section>
+        <h2>Fork</h2>
+
+        <p>Creates node.js process with easy communication.</p>
+
+        <pre><code>
+//master.js
+var slave = cp.fork('./slave');
+
+slave.send(anyData);
+
+slave.on('message', function(dataFromSlave) {
+});
+        </code></pre>
+
+        <pre><code>
+//slave.js
+process.on('message', function (dataFromMaster) {
+});
+
+process.send(dataToMaster);
+        </code></pre>
+    </section>
+
+    <section>
+        <p><a href="">Example 9.</a></p>
+
+        <img src="bolnoy_ublyudok.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>gist</h2>
+
+        <p>Heavy computing should be performed in separate processes.</p>
+    </section>
+
+    <section>
+        <h2>Part 6. Cluster</h2>
+
+        <p>On top of this debauchery.</p>
+        <p>Note: Stability: 2 - Unstable</p>
+    </section>
+
+    <section>
+        <h2>What's it</h2>
+
+        <ul>
+            <li>Built-in load balancer to take advantage of multi-core systems.</li>
+            <li>Creates multiple processes -&gt; servers, shares requests between.</li>
+            <li>All resources are shared.</li>
+        </ul>
+    </section>
+
+    <section><p><a style="display: block;" href="">Example 10</a></p>
+        <img width="300" style="display: block; margin:0 auto;" src="clusters.jpg" alt=""/>
+    </section>
+
+    <section>
+        <h2>Production ready alternatives</h2>
+
+        <ul>
+            <li>
+                <!-- TODO: Check it out-->
+                <a href="https://github.com/Unitech/pm2">PM2</a> 7,5k stars at GitHub
+            </li>
+            <li>
+                Deploy env tools (say Heroku has dynos).
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Part 4. socket.io</h2>
+
+        <p>Yes, finally</p>
+
+        <img src="io.png" height=200 alt=""/>
+    </section>
+
+    <section>
+        <h2>What is it?</h2>
+
+        <p>Duplex communication between client and server</p>
+
+        <p>(Not only the client calls server. Server can ping client.)</p>
+    </section>
+
+    <section>
+        <h2>What for?</h2>
+
+        <ul>
+            <li>Chats</li>
+            <li>vk.com</li>
+            <li>Online games</li>
+            <li>Real time analytics</li>
+        </ul>
+
+        <p>No need to send ajax calls each ... seconds.</p>
+    </section>
+
+    <section>
+        <h2>how it works</h2>
+
+        <p>Independent protocol over TCP, no connection with HTTP</p>
+    </section>
+
+    <section>
+        <h2>browser support</h2>
+
+        <p>All browsers are supported</p>
+
+        <ul>
+            <li>WebSocket protocol</li>
+            <li>Adobe flash sockets</li>
+            <li>JSONP Polling</li>
+            <li>AJAX Polling</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>How to use</h2>
+
+        <pre><code>
+npm i socket.io
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>server</h2>
+
+        <pre><code>
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+server.listen(80);
+        </code></pre>
+
+        <pre><code>
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>client</h2>
+
+        <pre><code>
+<!-- socket.io will respond with this script itself -->
+<script src="/socket.io/socket.io.js"></script>
+        </code></pre>
+
+        <pre><code>
+var socket = io.connect('http://localhost');
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Main methods</h2>
+
+        <ul>
+            <li>.emit('eventName', data)</li>
+            <li>.on('eventName', handler)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>additional features</h2>
+
+        <ul>
+            <li>namespaces</li>
+            <li>rooms</li>
+            <li>acknowledgements</li>
+            <li>much else</li>
+        </ul>
+    </section>
+
+    <section>
+        <p>Example 11</p>
+    </section>
+
+    <section>
+        <img src="thank-you.png" height="500"/>
+    </section>
 </div>
 
 		</div>

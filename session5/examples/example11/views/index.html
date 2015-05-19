@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>socket.io chat</title>
+    <link rel="stylesheet" href="//maxdcn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash-compat/3.8.0/lodash.js"></script>
+</head>
+<body>
+
+<div class="chat">
+</div>
+
+<form class="senderForm">
+    <input class="sendText" type="text"/>
+    <button class="send">Send</button>
+</form>
+
+<script>
+    var userName = prompt('Your username');
+
+    var socket = io.connect('http://localhost:8000');
+    socket.on('message', function (message) {
+        var compiled = _.template('<div class=".message"><%= author %>: <%= text %></div>');
+        var message = compiled(message);
+
+        $('.chat').append(message);
+    });
+
+    var $sendText = $('.sendText');
+
+    $('.senderForm').on('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        socket.send({author: userName, text: $sendText.val()});
+    });
+</script>
+
+</body>
+</html>
