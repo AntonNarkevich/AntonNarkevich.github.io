@@ -49,7 +49,7 @@ router.post("/:alias/:id",
 );
 
 router.get("/error", function (req, res, next) {
-	next(new Error("I want to raise error here"));
+	throw new Error("I want to raise error here");
 });
 
 module.exports = router;

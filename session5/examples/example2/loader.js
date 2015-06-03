@@ -5,7 +5,7 @@ var Loader = function () {
 	EventEmitter.call(this);
 	var self = this;
 
-	//self.setMaxListeners(0); //Removing max listener count.
+	self.setMaxListeners(0); //Removing max listener count.
 
 	var progressTimer = setInterval(function () {
 		self.emit('loadingProgress');

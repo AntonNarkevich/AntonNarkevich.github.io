@@ -14,6 +14,9 @@ var unzip = zlib.createGunzip();
 // write file
 var decrypted = fs.createWriteStream('decrypted.txt');
 
-encrypted.pipe(decrypt).pipe(unzip).pipe(decrypted).on('finish', function () {
+encrypted
+	.pipe(decrypt)
+	.pipe(unzip)
+	.pipe(decrypted).on('finish', function () {
 	console.log('Decryption has been finished.');
 });

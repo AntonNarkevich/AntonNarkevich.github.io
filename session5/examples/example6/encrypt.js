@@ -15,6 +15,7 @@ var encrypt = crypto.createCipher(algorithm, password);
 var encrypted = fs.createWriteStream('encrypted.txt');
 
 
-message.pipe(zip).pipe(encrypt).pipe(encrypted).on('finish', function () {
+message.pipe(zip)
+	.pipe(encrypt).pipe(encrypted).on('finish', function () {
 	console.log('Encryption has been finished.');
 });

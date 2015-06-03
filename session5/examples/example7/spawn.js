@@ -1,10 +1,10 @@
 var spawn = require('child_process').spawn;
 
-//var dir    = spawn('dir'); //For linux
-var dir = spawn(process.env.comspec, ['/c', 'dir']); //For windows
+var dir    = spawn('ls', ['-l']); //For linux
+//var dir = spawn(process.env.comspec, ['/c', 'dir']); //For windows
 
-//var dir    = spawn('grep js'); //For linux
-var grep = spawn(process.env.comspec, ['/c', 'grep', 'js']); //For windows
+var grep    = spawn('grep', ['js']); //For linux
+//var grep = spawn(process.env.comspec, ['/c', 'grep', 'js']); //For windows
 
 var fs = require('fs');
 var resultFile = fs.createWriteStream('result.txt');

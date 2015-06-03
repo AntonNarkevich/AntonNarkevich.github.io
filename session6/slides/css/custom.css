@@ -1,0 +1,13 @@
+.reveal section h1,
+.reveal section h2 {
+    color: #80bd01;
+}
+
+.reveal section strong {
+    color: #ecff32;
+}
+
+.reveal section img {
+    border: none;
+    background: white;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "test",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "chai-as-promised": "^5.0.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.25"
+  }
+}

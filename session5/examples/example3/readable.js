@@ -11,7 +11,7 @@ setTimeout(function () {
 	readableStream.on('data', function (st) {
 		console.log(st);
 	});
-}, 3000);
+}, 4000);
 
 readableStream.on('end', function () {
 	console.log('Readable stream ended');

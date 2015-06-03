@@ -21,7 +21,7 @@ if (cluster.isMaster) {
 		res.end(message);
 	});
 
-	server.listen(8000, function () {
+	server.listen(8001, function () {
 		console.log('Started server in cluster pid: %d', process.pid);
 	});
 }

@@ -15,10 +15,14 @@ app.post("/:alias/:id",
 			auhtHeader: req.get("Authorization")
 		};
 
+		setTimeout(function() {
+			next();
+		}, 1000);
+
 		console.log("Processed request %j", params);
 
 		res.json(params);
-		next();
+
 	},
 	function (req, res, next) {
 		req.endTime = new Date();

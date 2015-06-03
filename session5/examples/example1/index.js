@@ -25,6 +25,6 @@ radio.on('close', function (station) {
 	console.log('"%s" FM %s CLOSED', station.name, station.freq);
 });
 
-//radion.on('ghostEvent', function (data) {
-//	console.log(data.message);
-//});
+radio.on('ghostEvent', function (data) {
+	console.log(data.message);
+});
